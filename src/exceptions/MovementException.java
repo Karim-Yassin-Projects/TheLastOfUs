@@ -1,6 +1,6 @@
 package exceptions;
 
-public class MovementException extends GameActionException{
+public class MovementException extends GameActionException {
 
 	public MovementException() {
 		super();
