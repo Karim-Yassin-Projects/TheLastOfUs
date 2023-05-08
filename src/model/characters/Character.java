@@ -13,18 +13,16 @@ public abstract class Character {
 	private int attackDmg;
 	private Character target;
 
-	
 	public Character() {
 	}
-	
 
 	public Character(String name, int maxHp, int attackDmg) {
-		this.name=name;
+		this.name = name;
 		this.maxHp = maxHp;
 		this.currentHp = maxHp;
 		this.attackDmg = attackDmg;
 	}
-		
+
 	public Character getTarget() {
 		return target;
 	}
@@ -32,7 +30,7 @@ public abstract class Character {
 	public void setTarget(Character target) {
 		this.target = target;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -54,32 +52,35 @@ public abstract class Character {
 	}
 
 	public void setCurrentHp(int currentHp) {
-		if(currentHp < 0) 
+		if (currentHp < 0)
 			this.currentHp = 0;
-		else if(currentHp > maxHp) 
+		else if (currentHp > maxHp)
 			this.currentHp = maxHp;
-		else 
+		else
 			this.currentHp = currentHp;
 	}
 
 	public int getAttackDmg() {
 		return attackDmg;
 	}
-	
-	public void attack() throws InvalidTargetException, NotEnoughActionsException, Exception{
-		
+
+	public void attack() throws InvalidTargetException, NotEnoughActionsException, Exception {
+
 	}
+
 	public void defend(Character c) {
 
 	}
+
 	public void onCharacterDeath() {
 		Game.heroes.remove(this);
 		Game.map[location.y][location.x] = new CharacterCell(null);
 	}
-	public boolean isAdjacent(Point p){
+
+	public boolean isAdjacent(Point p) {
 		int dx = p.x - location.x;
 		int dy = p.y - location.y;
-		return Math.abs(dx)<=1 && Math.abs(dy)<=1;
+		return Math.abs(dx) <= 1 && Math.abs(dy) <= 1;
 	}
 
 }

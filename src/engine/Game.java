@@ -27,18 +27,18 @@ public class Game {
 			String[] content = line.split(",");
 			Hero hero = null;
 			switch (content[1]) {
-			case "FIGH":
-				hero = new Fighter(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
-						Integer.parseInt(content[3]));
-				break;
-			case "MED":
-				hero = new Medic(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
-						Integer.parseInt(content[3]));
-				break;
-			case "EXP":
-				hero = new Explorer(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
-						Integer.parseInt(content[3]));
-				break;
+				case "FIGH":
+					hero = new Fighter(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
+							Integer.parseInt(content[3]));
+					break;
+				case "MED":
+					hero = new Medic(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
+							Integer.parseInt(content[3]));
+					break;
+				case "EXP":
+					hero = new Explorer(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
+							Integer.parseInt(content[3]));
+					break;
 			}
 			availableHeroes.add(hero);
 			line = br.readLine();
@@ -62,7 +62,7 @@ public class Game {
 				continue;
 			}
 			CharacterCell c = (CharacterCell) Game.map[x][y];
-			if(c.getCharacter() != null) {
+			if (c.getCharacter() != null) {
 				continue;
 			}
 			c.setCharacter(z);
