@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>TheLastOfUs</name>
+	<name>Last of Us - Legacy</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,7 +16,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1679168591479</id>
+			<id>1678054033456</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

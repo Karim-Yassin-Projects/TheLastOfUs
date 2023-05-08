@@ -1,6 +1,9 @@
 package model.characters;
 
 import java.awt.Point;
+import engine.*;
+import exceptions.*;
+import model.world.*;
 
 public abstract class Character {
 	private String name;
@@ -10,22 +13,32 @@ public abstract class Character {
 	private int attackDmg;
 	private Character target;
 
+	
+	public Character() {
+	}
+	
+
 	public Character(String name, int maxHp, int attackDmg) {
-		this.name = name;
-		this.maxHp = this.currentHp = maxHp;
+		this.name=name;
+		this.maxHp = maxHp;
+		this.currentHp = maxHp;
 		this.attackDmg = attackDmg;
 	}
-
-	public Point getLocation() {
-		return location;
+		
+	public Character getTarget() {
+		return target;
 	}
 
+	public void setTarget(Character target) {
+		this.target = target;
+	}
+	
 	public String getName() {
 		return name;
 	}
 
-	public int getAttackDmg() {
-		return attackDmg;
+	public Point getLocation() {
+		return location;
 	}
 
 	public void setLocation(Point location) {
@@ -41,20 +54,32 @@ public abstract class Character {
 	}
 
 	public void setCurrentHp(int currentHp) {
-		if (currentHp > maxHp) {
-			currentHp = maxHp;
-		} else if (currentHp < 0) {
-			currentHp = 0;
-		}
-		this.currentHp = currentHp;
+		if(currentHp < 0) 
+			this.currentHp = 0;
+		else if(currentHp > maxHp) 
+			this.currentHp = maxHp;
+		else 
+			this.currentHp = currentHp;
 	}
 
-	public Character getTarget() {
-		return target;
+	public int getAttackDmg() {
+		return attackDmg;
 	}
+	
+	public void attack() throws InvalidTargetException, NotEnoughActionsException, Exception{
+		
+	}
+	public void defend(Character c) {
 
-	public void setTarget(Character target) {
-		this.target = target;
+	}
+	public void onCharacterDeath() {
+		Game.heroes.remove(this);
+		Game.map[location.y][location.x] = new CharacterCell(null);
+	}
+	public boolean isAdjacent(Point p){
+		int dx = p.x - location.x;
+		int dy = p.y - location.y;
+		return Math.abs(dx)<=1 && Math.abs(dy)<=1;
 	}
 
 }
