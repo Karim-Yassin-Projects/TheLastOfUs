@@ -101,36 +101,10 @@ public abstract class Hero extends Character {
 
 	}
 
-	public void attack() throws InvalidTargetException, NotEnoughActionsException {
-		if (this.getTarget() == null) {
-			throw new InvalidTargetException();
-		}
-		if (getTarget() instanceof Hero) {
-			throw new InvalidTargetException();
-		}
-		if (actionsAvailable != 0) {
-			actionsAvailable--;
-			if (isAdjacent(getTarget().getLocation())) {
-				getTarget().setCurrentHp(getTarget().getCurrentHp() - this.getAttackDmg());
-				getTarget().defend(this);
-			} else
-				throw new InvalidTargetException();
-		} else {
-			throw new NotEnoughActionsException();
-		}
-
-		if (getCurrentHp() == 0) {
-			onCharacterDeath();
-		}
-		if (getTarget().getCurrentHp() == 0) {
-			getTarget().onCharacterDeath();
-		}
-	}
-
+	
 	public void onCharacterDeath() {
 		Game.heroes.remove(this);
-		CharacterCell cell = (CharacterCell) Game.map[getLocation().y][getLocation().x];
-		cell.setCharacter(null);
+		super.onCharacterDeath();
 	}
 
 	public void defend(Character c) {
@@ -198,4 +172,21 @@ public abstract class Hero extends Character {
 		}
 	}
 
+	@Override
+	protected boolean hasValidAttackTarget() {
+		return getTarget() instanceof Zombie;
+	}
+
+	@Override
+	protected void checkCanAttack() throws NotEnoughActionsException {
+		if (actionsAvailable == 0) {
+			throw new NotEnoughActionsException();
+		}
+		actionsAvailable--;
+	}
+
+	@Override
+	public void attack() throws InvalidTargetException, NotEnoughActionsException {
+		super.attack();
+	}
 }

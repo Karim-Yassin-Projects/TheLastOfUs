@@ -3,46 +3,62 @@ package model.characters;
 import engine.Game;
 import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
+import model.world.Cell;
 import model.world.CharacterCell;
 
 public class Zombie extends Character {
 	static int ZOMBIES_COUNT = 1;
-	
+
 	public Zombie() {
 		super("Zombie " + ZOMBIES_COUNT, 40, 10);
 		ZOMBIES_COUNT++;
 	}
-	public void attack() throws Exception,InvalidTargetException, NotEnoughActionsException{
-		if(this.getTarget() == null) {
-			throw new InvalidTargetException();
-		}
-		if(getTarget() instanceof Zombie) {
-			throw new InvalidTargetException();
-		}
-			if(isAdjacent(getTarget().getLocation())) {
-				getTarget().setCurrentHp(getTarget().getCurrentHp()-this.getAttackDmg());
-				getTarget().defend(this);
-			}
-			else
-				throw new InvalidTargetException();	
-		if(getCurrentHp() == 0) {
-			onCharacterDeath();
-		}
-		if(getTarget().getCurrentHp() == 0) {
-			getTarget().onCharacterDeath();
-		}
-	}
+
 	public void defend(Character c) {
 		setTarget(c);
-		c.setCurrentHp(c.getCurrentHp()-getAttackDmg()/2);
+		c.setCurrentHp(c.getCurrentHp() - getAttackDmg() / 2);
 	}
-	
+
 	public void onCharacterDeath() {
 		Game.zombies.remove(this);
-		Game.map[getLocation().y][getLocation().x] = new CharacterCell(null);
 		Game.insertRandomZombie(new Zombie());
-		
+		super.onCharacterDeath();
+	}
+
+	@Override
+	protected boolean hasValidAttackTarget() {
+		return getTarget() instanceof Hero;
+	}
+
+	public void pickTarget() {
+		int zx = getLocation().x;
+		int zy = getLocation().y;
+		for (int x = Math.max(zx - 1, 0); x <= zx + 1 && x < 15; x++) {
+			for (int y = Math.max(zy - 1, 0); y <= zy + 1 && y < 15; y++) {
+				if (x == zx && y == zy) {
+					continue;
+				}
+				Cell c = Game.map[x][y];
+				if (!(c instanceof CharacterCell)) {
+					continue;
+				}
+				CharacterCell charCell = (CharacterCell) c;
+				if (!(charCell.getCharacter() instanceof Hero)) {
+					continue;
+				}
+				setTarget(charCell.getCharacter());
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void attack() throws InvalidTargetException, NotEnoughActionsException {
+		pickTarget();
+		super.attack();
+	}
+
+	@Override
+	protected void checkCanAttack() throws NotEnoughActionsException {
 	}
 }
-
-
