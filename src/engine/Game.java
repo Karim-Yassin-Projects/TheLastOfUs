@@ -14,7 +14,7 @@ import model.collectibles.*;
 
 public class Game {
 
-	public static Cell[][] map;
+	public static Cell[][] map = new Cell[15][15];
 	public static ArrayList<Hero> availableHeroes = new ArrayList<Hero>();
 	public static ArrayList<Hero> heroes = new ArrayList<Hero>();
 	public static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
@@ -89,7 +89,6 @@ public class Game {
 	public static void startGame(Hero h) {
 		Game.availableHeroes.remove(h);
 		Game.heroes.add(h);
-		Game.map = new Cell[15][15];
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
 				Game.map[i][j] = new CharacterCell(null);
@@ -97,6 +96,7 @@ public class Game {
 		}
 		h.setLocation(new Point(0, 0));
 		Game.map[0][0] = new CharacterCell(h);
+		h.handleMovementVisibility();
 		int i = 10;
 		int j = 5;
 		while (i > 0) {
