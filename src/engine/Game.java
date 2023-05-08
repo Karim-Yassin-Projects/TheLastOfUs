@@ -27,18 +27,18 @@ public class Game {
 			String[] content = line.split(",");
 			Hero hero = null;
 			switch (content[1]) {
-				case "FIGH":
-					hero = new Fighter(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
-							Integer.parseInt(content[3]));
-					break;
-				case "MED":
-					hero = new Medic(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
-							Integer.parseInt(content[3]));
-					break;
-				case "EXP":
-					hero = new Explorer(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
-							Integer.parseInt(content[3]));
-					break;
+			case "FIGH":
+				hero = new Fighter(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
+						Integer.parseInt(content[3]));
+				break;
+			case "MED":
+				hero = new Medic(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
+						Integer.parseInt(content[3]));
+				break;
+			case "EXP":
+				hero = new Explorer(content[0], Integer.parseInt(content[2]), Integer.parseInt(content[4]),
+						Integer.parseInt(content[3]));
+				break;
 			}
 			availableHeroes.add(hero);
 			line = br.readLine();
@@ -47,70 +47,43 @@ public class Game {
 		br.close();
 	}
 
-	public static void insertRandomZombie(Zombie z) {
-		int x;
-		int y;
-		boolean flag = false;
+	private static Point getRandomEmptyCell() {
 		do {
-			x = (int) Math.random() * 15;
-			y = (int) Math.random() * 15;
+			int x = (int) (Math.random() * 15);
+			int y = (int) (Math.random() * 15);
 			if (Game.map[x][y] == null) {
 				Game.map[x][y] = new CharacterCell(null);
+				return new Point(x, y);
 			}
 
 			if (!(Game.map[x][y] instanceof CharacterCell)) {
 				continue;
 			}
-			CharacterCell c = (CharacterCell) Game.map[x][y];
-			if (c.getCharacter() != null) {
-				continue;
+			if (((CharacterCell)Game.map[x][y]).getCharacter() == null){
+				return new Point(x, y);
 			}
-			c.setCharacter(z);
-			z.setLocation(new Point(x, y));
-			zombies.add(z);
-			flag = true;
-		} while (flag == false);
+		}while(true);
+	}
 
+	public static void insertRandomZombie(Zombie z) {
+		Point p = getRandomEmptyCell();
+		CharacterCell c = (CharacterCell)Game.map[p.x][p.y];
+		c.setCharacter(z);
+		z.setLocation(p);
+		zombies.add(z);
+		
 	}
 
 	public static void insertRandomCollectible(Collectible c) {
-		int x;
-		int y;
-		boolean flag = false;
-		do {
-			x = (int) Math.random() * 15;
-			y = (int) Math.random() * 15;
-			if (x != 0 && y != 0) {
-				if (!(Game.map[x][y] instanceof CharacterCell) && !(Game.map[x][y] instanceof TrapCell)
-						&& !(Game.map[x][y] instanceof CollectibleCell)) {
-					CollectibleCell cell = (CollectibleCell) Game.map[x][y];
-					cell = new CollectibleCell(c);
-					flag = true;
-				}
-
-			}
-		} while (flag == false);
-
+		Point p = getRandomEmptyCell();
+		CollectibleCell cell = new CollectibleCell(c);
+		Game.map[p.x][p.y] = cell;
 	}
 
 	public static void insertTraps() {
-		int x;
-		int y;
-		boolean flag = false;
-		do {
-			x = (int) Math.random() * 15;
-			y = (int) Math.random() * 15;
-			if (x != 0 && y != 0) {
-				if (!(Game.map[x][y] instanceof CharacterCell) && !(Game.map[x][y] instanceof CollectibleCell)
-						&& !(Game.map[x][y] instanceof TrapCell)) {
-					TrapCell cell = (TrapCell) Game.map[x][y];
-					cell = new TrapCell();
-					flag = true;
-				}
-
-			}
-		} while (flag == false);
-
+		Point p = getRandomEmptyCell();
+		TrapCell cell = new TrapCell();
+		Game.map[p.x][p.y] = cell;
 	}
 
 	public static void startGame(Hero h) {
