@@ -1,7 +1,11 @@
 package model.collectibles;
 
+import java.awt.Point;
+
+import engine.Game;
 import exceptions.NoAvailableResourcesException;
 import model.characters.Hero;
+import model.world.CharacterCell;
 
 public class Vaccine implements Collectible {
 
@@ -17,7 +21,19 @@ public class Vaccine implements Collectible {
 		else {
 			h.getVaccineInventory().remove(this);
 		}
-			
+
+		// if (!Game.heroes.contains(h)) {
+		// 	Game.heroes.add(h);
+		// }
+		Point p = h.getTarget().getLocation();
+		Game.zombies.remove(h.getTarget());
+		int index = (int)(Math.random() * Game.availableHeroes.size());
+		Hero newHero = Game.availableHeroes.get(index);
+		newHero.setLocation(h.getTarget().getLocation());
+		Game.availableHeroes.remove(index);
+		Game.map[p.x][p.y] = new CharacterCell(newHero);
+		Game.heroes.add(newHero);
+		h.setTarget(null);
 	}
 
 }

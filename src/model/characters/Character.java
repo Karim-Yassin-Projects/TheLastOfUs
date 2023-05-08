@@ -99,6 +99,9 @@ public abstract class Character {
 	}
 
 	public boolean isAdjacent(Point p) {
+		if (p == null) {
+			return true;
+		}
 		int dx = p.x - location.x;
 		int dy = p.y - location.y;
 		return Math.abs(dx) <= 1 && Math.abs(dy) <= 1;

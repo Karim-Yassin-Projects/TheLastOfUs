@@ -56,9 +56,13 @@ public abstract class Hero extends Character {
 	}
 
 	public void handleMovementVisibility() {
+		Point loc = this.getLocation();
+		if (loc == null) {
+			return;
+		}
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
-				if (this.getLocation().x == i && this.getLocation().y == j) {
+				if (loc.x == i && loc.y == j) {
 					if (Game.map[i][j] != null)
 						Game.map[i][j].setVisible(true);
 				} else {
@@ -125,13 +129,8 @@ public abstract class Hero extends Character {
 			if (!isAdjacent(getTarget().getLocation())) {
 				throw new InvalidTargetException();
 			}
-			Vaccine v = this.vaccineInventory.get((int) Math.random() * this.vaccineInventory.size());
+			Vaccine v = this.vaccineInventory.get((int) (Math.random() * this.vaccineInventory.size()));
 			v.use(this);
-			Point p = getTarget().getLocation();
-			Game.zombies.remove(getTarget());
-			Hero h = Game.availableHeroes.get((int) Math.random() * Game.availableHeroes.size());
-			Game.map[p.x][p.y] = new CharacterCell(h);
-			Game.heroes.add(h);
 			this.actionsAvailable--;
 		}
 	}

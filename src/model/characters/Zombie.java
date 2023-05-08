@@ -31,6 +31,7 @@ public class Zombie extends Character {
 	}
 
 	public void pickTarget() {
+		setTarget(null);
 		int zx = getLocation().x;
 		int zy = getLocation().y;
 		for (int x = Math.max(zx - 1, 0); x <= zx + 1 && x < 15; x++) {

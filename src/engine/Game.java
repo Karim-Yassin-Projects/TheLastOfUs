@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
 import model.characters.*;
+import model.characters.Character;
 import model.world.*;
 import model.collectibles.*;
 
@@ -210,7 +211,23 @@ public class Game {
 		}
 	}
 
+	private static void fixLocations() {
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				Cell c = Game.map[i][j];
+				if (c instanceof CharacterCell) {
+					CharacterCell charCell = (CharacterCell) c;
+					Character ch = charCell.getCharacter();
+					if (ch != null) {
+						ch.setLocation(new Point(i, j));
+					}
+				}
+			}
+		}
+	}
+
 	public static void endTurn() throws InvalidTargetException, NotEnoughActionsException, Exception {
+		fixLocations();
 		handleAttackOfTheZombies();
 		resetHeroes();
 		makeAllInvisible();
