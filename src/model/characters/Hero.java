@@ -80,8 +80,7 @@ public abstract class Hero extends Character {
 			for (int j = 0; j < 15; j++) {
 				Cell c = Game.map[i][j];
 				if (c instanceof CharacterCell
-					&& ((CharacterCell)c).getCharacter() == this
-				) {
+						&& ((CharacterCell) c).getCharacter() == this) {
 					return new Point(i, j);
 				}
 			}
@@ -118,7 +117,6 @@ public abstract class Hero extends Character {
 
 	}
 
-	
 	public void onCharacterDeath() {
 		Game.heroes.remove(this);
 		super.onCharacterDeath();

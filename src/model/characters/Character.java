@@ -94,7 +94,7 @@ public abstract class Character {
 		if (!(Game.map[location.x][location.y] instanceof CharacterCell)) {
 			return;
 		}
-		CharacterCell cell = (CharacterCell)Game.map[location.x][location.y];
+		CharacterCell cell = (CharacterCell) Game.map[location.x][location.y];
 		cell.setCharacter(null);
 	}
 

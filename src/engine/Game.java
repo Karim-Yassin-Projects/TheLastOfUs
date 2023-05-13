@@ -176,7 +176,7 @@ public class Game {
 					c = new CharacterCell(null);
 					Game.map[i][j] = c;
 				} else {
-					((CharacterCell)c).setCharacter(null);
+					((CharacterCell) c).setCharacter(null);
 				}
 				c.setVisible(false);
 			}
