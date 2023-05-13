@@ -83,7 +83,7 @@ public class Game {
 		Game.map[p.x][p.y] = cell;
 	}
 
-	public static void insertTraps() {
+	public static void insertRandomTrap() {
 		Point p = getRandomEmptyCell();
 		TrapCell cell = new TrapCell();
 		Game.map[p.x][p.y] = cell;
@@ -103,13 +103,12 @@ public class Game {
 		for (int i = 0; i < 5; i++) {
 			insertRandomCollectible(new Supply());
 			insertRandomCollectible(new Vaccine());
-			insertTraps();
+			insertRandomTrap();
 		}
 		h.handleMovementVisibility();
 	}
 
 	public static boolean checkWin() {
-
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
 				if (Game.map[i][j] instanceof CollectibleCell) {
@@ -132,24 +131,24 @@ public class Game {
 	}
 
 	public static boolean checkGameOver() {
-		boolean flag1 = true;
-		boolean flag2 = true;
+		boolean allVaccinesCollected = true;
+		boolean allVaccinesUsed = true;
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
 				if (Game.map[i][j] instanceof CollectibleCell) {
 					CollectibleCell c = (CollectibleCell) Game.map[i][j];
 					if (c.getCollectible() instanceof Vaccine)
-						flag1 = false;
+						allVaccinesCollected = false;
 				}
 			}
 		}
-		boolean flag3 = Game.heroes.size() == 0;
+		boolean heroesOverwhelmed = Game.heroes.size() == 0;
 		for (int i = 0; i < Game.heroes.size(); i++) {
 			if (Game.heroes.get(i).getVaccineInventory().size() != 0) {
-				flag2 = false;
+				allVaccinesUsed = false;
 			}
 		}
-		return (flag1 && flag2) || flag3;
+		return (allVaccinesCollected && allVaccinesUsed) || heroesOverwhelmed;
 	}
 
 	private static void makeAllInvisible() {

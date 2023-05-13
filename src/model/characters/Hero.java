@@ -172,7 +172,7 @@ public abstract class Hero extends Character {
 		} else if (oldCell instanceof CollectibleCell) {
 			newCell = handleCollectibleCell(oldCell);
 		}
-		Game.map[getLocation().x][getLocation().y] = new CharacterCell(null);
+		((CharacterCell)Game.map[getLocation().x][getLocation().y]).setCharacter(null);
 		setLocation(newLocation);
 		Game.map[getLocation().x][getLocation().y] = newCell;
 		if (getCurrentHp() == 0) {
