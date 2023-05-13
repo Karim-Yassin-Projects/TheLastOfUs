@@ -58,22 +58,35 @@ public abstract class Hero extends Character {
 	public void handleMovementVisibility() {
 		Point loc = this.getLocation();
 		if (loc == null) {
-			return;
+			loc = findHero();
+			if (loc == null) {
+				return;
+			}
+			setLocation(loc);
 		}
+		for (int i = Math.max(0, loc.x - 1); i <= loc.x + 1 && i < 15; i++) {
+			for (int j = Math.max(0, loc.y - 1); j <= loc.y + 1 && j < 15; j++) {
+				if (Game.map[i][j] == null) {
+					Game.map[i][j] = new CharacterCell(i == loc.x && j == loc.y ? this : null);
+				}
+				Game.map[i][j].setVisible(true);
+			}
+
+		}
+	}
+
+	private Point findHero() {
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
-				if (loc.x == i && loc.y == j) {
-					if (Game.map[i][j] != null)
-						Game.map[i][j].setVisible(true);
-				} else {
-					Point p = new Point(i, j);
-					if (isAdjacent(p)) {
-						if (Game.map[i][j] != null)
-							Game.map[i][j].setVisible(true);
-					}
+				Cell c = Game.map[i][j];
+				if (c instanceof CharacterCell
+					&& ((CharacterCell)c).getCharacter() == this
+				) {
+					return new Point(i, j);
 				}
 			}
 		}
+		return null;
 	}
 
 	public Cell handleCharacterCell(Cell c) throws MovementException {
@@ -129,7 +142,7 @@ public abstract class Hero extends Character {
 			if (!isAdjacent(getTarget().getLocation())) {
 				throw new InvalidTargetException();
 			}
-			Vaccine v = this.vaccineInventory.get((int) (Math.random() * this.vaccineInventory.size()));
+			Vaccine v = this.vaccineInventory.get(Game.random.nextInt(this.vaccineInventory.size()));
 			v.use(this);
 			this.actionsAvailable--;
 		}

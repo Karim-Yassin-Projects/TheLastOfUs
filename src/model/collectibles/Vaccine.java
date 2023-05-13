@@ -27,7 +27,7 @@ public class Vaccine implements Collectible {
 		// }
 		Point p = h.getTarget().getLocation();
 		Game.zombies.remove(h.getTarget());
-		int index = (int)(Math.random() * Game.availableHeroes.size());
+		int index = (int)(Game.random.nextInt(Game.availableHeroes.size()));
 		Hero newHero = Game.availableHeroes.get(index);
 		newHero.setLocation(h.getTarget().getLocation());
 		Game.availableHeroes.remove(index);

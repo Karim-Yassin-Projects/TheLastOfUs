@@ -22,7 +22,7 @@ public class Explorer extends Hero {
 		}
 		else {
 		this.setSpecialAction(true);
-		Supply s = this.getSupplyInventory().get((int)Math.random()*this.getSupplyInventory().size());
+		Supply s = this.getSupplyInventory().get(Game.random.nextInt(this.getSupplyInventory().size()));
 		s.use(this);
 		for(int i = 0; i<15; i++) {
 			for(int j = 0; j<15; j++) {

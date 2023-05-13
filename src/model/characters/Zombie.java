@@ -62,4 +62,8 @@ public class Zombie extends Character {
 	@Override
 	protected void checkCanAttack() throws NotEnoughActionsException {
 	}
+
+	public static void resetZombieCount() {
+		ZOMBIES_COUNT = 1;
+	}
 }

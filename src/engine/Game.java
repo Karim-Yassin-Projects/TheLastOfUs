@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
@@ -19,6 +20,7 @@ public class Game {
 	public static ArrayList<Hero> availableHeroes = new ArrayList<Hero>();
 	public static ArrayList<Hero> heroes = new ArrayList<Hero>();
 	public static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+	public static Random random = new Random(0);
 
 	public static void loadHeroes(String filePath) throws IOException {
 
@@ -50,8 +52,8 @@ public class Game {
 
 	private static Point getRandomEmptyCell() {
 		do {
-			int x = (int) (Math.random() * 15);
-			int y = (int) (Math.random() * 15);
+			int x = random.nextInt(15);
+			int y = random.nextInt(15);
 			if (Game.map[x][y] == null) {
 				Game.map[x][y] = new CharacterCell(null);
 				return new Point(x, y);
@@ -88,26 +90,22 @@ public class Game {
 	}
 
 	public static void startGame(Hero h) {
+		Zombie.resetZombieCount();
 		Game.availableHeroes.remove(h);
 		Game.heroes.add(h);
-		makeAllInvisible();
+		resetGameMap();
 
 		h.setLocation(new Point(0, 0));
 		Game.map[0][0] = new CharacterCell(h);
-		h.handleMovementVisibility();
-		int i = 10;
-		int j = 5;
-		while (i > 0) {
+		for (int i = 0; i < 10; i++) {
 			insertRandomZombie(new Zombie());
-			i--;
 		}
-		while (j > 0) {
+		for (int i = 0; i < 5; i++) {
 			insertRandomCollectible(new Supply());
 			insertRandomCollectible(new Vaccine());
 			insertTraps();
-			j--;
 		}
-
+		h.handleMovementVisibility();
 	}
 
 	public static boolean checkWin() {
@@ -161,6 +159,24 @@ public class Game {
 				if (c == null) {
 					c = new CharacterCell(null);
 					Game.map[i][j] = c;
+				}
+				c.setVisible(false);
+			}
+		}
+	}
+
+	private static void resetGameMap() {
+		if (Game.map == null) {
+			Game.map = new Cell[15][15];
+		}
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				Cell c = Game.map[i][j];
+				if (!(c instanceof CharacterCell)) {
+					c = new CharacterCell(null);
+					Game.map[i][j] = c;
+				} else {
+					((CharacterCell)c).setCharacter(null);
 				}
 				c.setVisible(false);
 			}

@@ -1,6 +1,7 @@
 package model.characters;
 
 import model.collectibles.Supply;
+import engine.Game;
 import exceptions.*;
 public class Medic extends Hero {
 	//Heal amount  attribute - quiz idea
@@ -24,7 +25,7 @@ public class Medic extends Hero {
 			throw new NoAvailableResourcesException();
 		}
 		else {
-		Supply s = this.getSupplyInventory().get((int)Math.random()*this.getSupplyInventory().size());
+		Supply s = this.getSupplyInventory().get(Game.random.nextInt(this.getSupplyInventory().size()));
 		s.use(this);
 		if(!isAdjacent(getTarget().getLocation())){
 			throw new InvalidTargetException();
