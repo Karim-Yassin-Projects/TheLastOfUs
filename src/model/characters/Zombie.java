@@ -34,4 +34,9 @@ public class Zombie extends Character {
 			}
 		}
 	}
+
+	@Override
+	public String getImage() {
+		return "images/zombie.png";
+	}
 }

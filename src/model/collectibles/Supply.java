@@ -15,4 +15,7 @@ public class Supply implements Collectible {
 		h.getSupplyInventory().remove(this);
 	}
 
+	public String getImage() {
+		return "images/supply.png";
+	}
 }

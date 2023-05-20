@@ -28,4 +28,8 @@ public class Vaccine implements Collectible {
 		tba.setLocation(p);
 	}
 
+	public String getImage() {
+		return "images/vaccine.png";
+	}
+
 }

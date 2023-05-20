@@ -14,5 +14,4 @@ public class CollectibleCell extends Cell {
 		return collectible;
 	}
 	
-
 }
