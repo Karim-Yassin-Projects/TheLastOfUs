@@ -8,4 +8,5 @@ public class InvalidTargetException extends GameActionException {
 	public InvalidTargetException(String message) {
 		super(message);
 	}
+
 }

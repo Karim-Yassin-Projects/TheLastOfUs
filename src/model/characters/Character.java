@@ -1,26 +1,49 @@
 package model.characters;
 
 import java.awt.Point;
-import engine.*;
-import exceptions.*;
-import model.world.*;
+
+import model.world.CharacterCell;
+import engine.Game;
+import exceptions.InvalidTargetException;
+import exceptions.NotEnoughActionsException;
 
 public abstract class Character {
+
 	private String name;
-	private Point location;
 	private int maxHp;
 	private int currentHp;
+	private Point location;
 	private int attackDmg;
 	private Character target;
 
-	public Character() {
-	}
-
-	public Character(String name, int maxHp, int attackDmg) {
+	public Character(String name, int maxHp, int attackDamage) {
 		this.name = name;
 		this.maxHp = maxHp;
+		this.attackDmg = attackDamage;
 		this.currentHp = maxHp;
-		this.attackDmg = attackDmg;
+	}
+
+	public int getCurrentHp() {
+		return currentHp;
+	}
+
+	public void setCurrentHp(int currentHp) {
+		if (currentHp <= 0) {
+			this.currentHp = 0;
+			onCharacterDeath();
+			
+		} else if (currentHp > maxHp) {
+			this.currentHp = maxHp;
+		} else
+			this.currentHp = currentHp;
+	}
+
+	public Point getLocation() {
+		return location;
+	}
+
+	public void setLocation(Point location) {
+		this.location = location;
 	}
 
 	public Character getTarget() {
@@ -35,76 +58,34 @@ public abstract class Character {
 		return name;
 	}
 
-	public Point getLocation() {
-		return location;
-	}
-
-	public void setLocation(Point location) {
-		this.location = location;
-	}
-
 	public int getMaxHp() {
 		return maxHp;
-	}
-
-	public int getCurrentHp() {
-		return currentHp;
-	}
-
-	public void setCurrentHp(int currentHp) {
-		if (currentHp < 0)
-			this.currentHp = 0;
-		else if (currentHp > maxHp)
-			this.currentHp = maxHp;
-		else
-			this.currentHp = currentHp;
 	}
 
 	public int getAttackDmg() {
 		return attackDmg;
 	}
 
-	public void attack() throws InvalidTargetException, NotEnoughActionsException {
-		if (!hasValidAttackTarget()) {
-			throw new InvalidTargetException();
-		}
-		checkCanAttack();
-		if (isAdjacent(getTarget().getLocation())) {
-			getTarget().setCurrentHp(getTarget().getCurrentHp() - this.getAttackDmg());
-			getTarget().defend(this);
-		} else
-			throw new InvalidTargetException();
-		if (getCurrentHp() == 0) {
-			onCharacterDeath();
-		}
-		if (getTarget().getCurrentHp() == 0) {
-			getTarget().onCharacterDeath();
-		}
+	public void attack() throws NotEnoughActionsException,
+			InvalidTargetException {
+		getTarget().setCurrentHp(getTarget().getCurrentHp() - getAttackDmg());
+		getTarget().defend(this);
 	}
 
-	protected abstract void checkCanAttack() throws NotEnoughActionsException;
-
-	protected abstract boolean hasValidAttackTarget();
-
 	public void defend(Character c) {
-
+		c.setCurrentHp(c.getCurrentHp() - getAttackDmg() / 2);
 	}
 
 	public void onCharacterDeath() {
-		if (!(Game.map[location.x][location.y] instanceof CharacterCell)) {
-			return;
+		Point p = this.getLocation();
+		
+		if (this instanceof Zombie) {
+			Game.zombies.remove(this);
+			Game.spawnNewZombie();
+		} else if (this instanceof Hero) {
+			Game.heroes.remove(this);
 		}
-		CharacterCell cell = (CharacterCell) Game.map[location.x][location.y];
-		cell.setCharacter(null);
-	}
-
-	public boolean isAdjacent(Point p) {
-		if (p == null) {
-			return true;
-		}
-		int dx = p.x - location.x;
-		int dy = p.y - location.y;
-		return Math.abs(dx) <= 1 && Math.abs(dy) <= 1;
+		Game.map[p.x][p.y] = new CharacterCell(null);
 	}
 
 }

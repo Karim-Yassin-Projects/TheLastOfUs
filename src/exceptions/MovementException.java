@@ -8,4 +8,5 @@ public class MovementException extends GameActionException {
 	public MovementException(String message) {
 		super(message);
 	}
+
 }

@@ -1,33 +1,20 @@
 package model.characters;
 
-import model.collectibles.Supply;
-import engine.Game;
-import exceptions.*;
+import exceptions.InvalidTargetException;
+import exceptions.NoAvailableResourcesException;
 
 public class Medic extends Hero {
-	// Heal amount attribute - quiz idea
 
-	public Medic(String name, int maxHp, int attackDmg, int maxActions) {
-		super(name, maxHp, attackDmg, maxActions);
-
+	public Medic(String name, int maxHp, int attackDamage, int maxActions) {
+		super(name, maxHp, attackDamage, maxActions);
 	}
 
-	public void useSpecial() throws Exception, InvalidTargetException {
-		if (getTarget() instanceof Hero) {
-			this.setSpecialAction(true);
-			getTarget().setCurrentHp(getTarget().getMaxHp());
-		} else {
-			throw new InvalidTargetException();
-		}
-		if (this.getSupplyInventory().isEmpty()) {
-			throw new NoAvailableResourcesException();
-		} else {
-			Supply s = this.getSupplyInventory().get(Game.random.nextInt(this.getSupplyInventory().size()));
-			s.use(this);
-			if (!isAdjacent(getTarget().getLocation())) {
-				throw new InvalidTargetException();
-			}
-		}
+	public void useSpecial() throws NoAvailableResourcesException, InvalidTargetException {
+		if (getTarget() instanceof Zombie)
+			throw new InvalidTargetException("You can only cure fellow heroes.");
+		if (!checkDistance())
+			throw new InvalidTargetException("You are only able to heal adjacent targets.");
+		super.useSpecial();
+		getTarget().setCurrentHp(getTarget().getMaxHp());
 	}
-
 }

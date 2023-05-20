@@ -3,36 +3,29 @@ package model.collectibles;
 import java.awt.Point;
 
 import engine.Game;
-import exceptions.NoAvailableResourcesException;
+import model.characters.Character;
 import model.characters.Hero;
+import model.world.Cell;
 import model.world.CharacterCell;
 
 public class Vaccine implements Collectible {
 
-	public Vaccine() {
-
-	}
-
+	@Override
 	public void pickUp(Hero h) {
 		h.getVaccineInventory().add(this);
 	}
 
-	public void use(Hero h) throws NoAvailableResourcesException {
-		if (h.getVaccineInventory().isEmpty())
-			throw new NoAvailableResourcesException();
-		else {
-			h.getVaccineInventory().remove(this);
-		}
-
+	@Override
+	public void use(Hero h) {
+		h.getVaccineInventory().remove(this);
 		Point p = h.getTarget().getLocation();
+		Cell cell = Game.map[p.x][p.y];
 		Game.zombies.remove(h.getTarget());
-		int index = (int) (Game.random.nextInt(Game.availableHeroes.size()));
-		Hero newHero = Game.availableHeroes.get(index);
-		newHero.setLocation(h.getTarget().getLocation());
-		Game.availableHeroes.remove(index);
-		Game.map[p.x][p.y] = new CharacterCell(newHero);
-		Game.heroes.add(newHero);
-		h.setTarget(null);
+		Hero tba = Game.availableHeroes.get((int) (Math.random() * Game.availableHeroes.size()));
+		Game.availableHeroes.remove(tba);
+		Game.heroes.add(tba);
+		((CharacterCell) cell).setCharacter(tba);
+		tba.setLocation(p);
 	}
 
 }

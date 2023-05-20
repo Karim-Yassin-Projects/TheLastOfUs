@@ -1,21 +1,19 @@
 package model.world;
 
 import model.characters.Character;
-import model.characters.Hero;
 
 public class CharacterCell extends Cell {
 
 	private Character character;
 	private boolean isSafe;
-
+	
 	public CharacterCell(Character character, boolean isSafe) {
 		this.character = character;
-		this.isSafe = isSafe;
+		this.isSafe=isSafe;
 	}
-
+	
 	public CharacterCell(Character character) {
-		this.setCharacter(character);
-		this.isSafe = false;
+		this.character = character;
 	}
 
 	public Character getCharacter() {
@@ -24,12 +22,6 @@ public class CharacterCell extends Cell {
 
 	public void setCharacter(Character character) {
 		this.character = character;
-		if (character instanceof Hero) {
-			Hero hero = (Hero) character;
-			if (hero.getCurrentHp() > 0) {
-				setVisible(true);
-			}
-		}
 	}
 
 	public boolean isSafe() {
@@ -39,4 +31,5 @@ public class CharacterCell extends Cell {
 	public void setSafe(boolean isSafe) {
 		this.isSafe = isSafe;
 	}
+
 }
