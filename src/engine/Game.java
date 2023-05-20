@@ -28,6 +28,7 @@ public class Game {
 
 	public static final int GRID_WIDTH = 15;
 	public static final int GRID_HEIGHT = 15;
+	private static Hero selectedHero;
 
 	public static ArrayList<Hero> availableHeroes = new ArrayList<Hero>();
 	public static ArrayList<Hero> heroes = new ArrayList<Hero>();
@@ -207,6 +208,19 @@ public class Game {
 	// unsubscribe
 	public static void removeGameListner(GameListener listener) {
 		gameListeners.remove(listener);
+	}
+	public static Hero getSelectedHero() {
+		return selectedHero;
+	}
+	public static void setSelectedHero(Hero selectedHero) {
+		if(selectedHero == Game.selectedHero){
+			return;
+		}
+		Hero oldHero = Game.selectedHero;
+		Game.selectedHero = selectedHero;
+		for(GameListener listener : gameListeners){
+			listener.onSelectedHeroChanged(oldHero, Game.selectedHero);
+		}
 	}
 	
 }
