@@ -19,10 +19,10 @@ public class Zombie extends Character {
 		Point p = getLocation();
 		for (int i = -1; i <= 1; i++) {
 			int cx = p.x + i;
-			if (cx >= 0 && cx <= 14) {
+			if (cx >= 0 && cx <= Game.GRID_HEIGHT - 1) {
 				for (int j = -1; j <= 1; j++) {
 					int cy = p.y + j;
-					if (cy >= 0 && cy <= 14) {
+					if (cy >= 0 && cy <= Game.GRID_WIDTH - 1) {
 						if (!(i == 0 && j == 0) && Game.map[cx][cy] instanceof CharacterCell
 								&& ((CharacterCell) Game.map[cx][cy]).getCharacter() instanceof Hero) {
 							setTarget(((CharacterCell) Game.map[cx][cy]).getCharacter());

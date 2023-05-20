@@ -18,11 +18,11 @@ import model.world.CollectibleCell;
 public class GameGrid extends JPanel {
     public GameGrid() {
         super();
-        this.setLayout(new GridLayout(15, 15));
+        this.setLayout(new GridLayout(Game.GRID_HEIGHT, Game.GRID_WIDTH));
         this.setBackground(Color.DARK_GRAY);
         
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
+        for (int i = 0; i < Game.GRID_HEIGHT; i++) {
+            for (int j = 0; j < Game.GRID_WIDTH; j++) {
                 JButton button = new JButton();
                 add(button);
                 updateCellButton(i, j);                
@@ -32,24 +32,25 @@ public class GameGrid extends JPanel {
         Game.addGameListener(new GameListener() {
             @Override
             public void onCellChanged(int x, int y, Cell oldCell, Cell newCell) {
-                updateCellButton(14-x, y);
+                updateCellButton(Game.GRID_HEIGHT - 1 -x, y);
             }
         });
     }
 
     private void updateCellButton(int i, int j) {
-        JButton button = (JButton)getComponent(i * 15 + j);
-        if (Game.map[14 - i][j].isVisible()) {
+        JButton button = (JButton)getComponent(i * Game.GRID_WIDTH + j);
+        int mapI = Game.GRID_HEIGHT - 1 - i;
+        if (Game.map[mapI][j].isVisible()) {
             button.setBackground(Color.WHITE);
         } else {
             button.setBackground(Color.DARK_GRAY);
         }
-        if (Game.map[14 - i][j] instanceof CollectibleCell) {
-            CollectibleCell cell = (CollectibleCell) Game.map[14 - i][j];
+        if (Game.map[mapI][j] instanceof CollectibleCell) {
+            CollectibleCell cell = (CollectibleCell) Game.map[mapI][j];
             Icon icon = new ImageIcon(cell.getCollectible().getImage());
             button.setIcon(icon);
-        } else if (Game.map[14 - i][j] instanceof CharacterCell) {
-            CharacterCell cell = (CharacterCell) Game.map[14 - i][j];
+        } else if (Game.map[mapI][j] instanceof CharacterCell) {
+            CharacterCell cell = (CharacterCell) Game.map[mapI][j];
             if (cell.getCharacter() != null) {
                 Icon icon = new ImageIcon(cell.getCharacter().getImage());
                 button.setIcon(icon);

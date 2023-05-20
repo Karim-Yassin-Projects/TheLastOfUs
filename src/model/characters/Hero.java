@@ -81,7 +81,7 @@ public abstract class Hero extends Character {
 			tX++;
 			break;
 		}
-		if (tX < 0 || tY < 0 || tX > Game.map.length - 1 || tY > Game.map.length - 1)
+		if (tX < 0 || tY < 0 || tX > Game.map.length - 1 || tY > Game.GRID_WIDTH - 1)
 			throw new MovementException("You cannot move outside the borders of the map.");
 		if (Game.map[tX][tY] instanceof CharacterCell && ((CharacterCell) Game.map[tX][tY]).getCharacter() != null)
 			throw new MovementException("You cannot move to an occuppied cell.");

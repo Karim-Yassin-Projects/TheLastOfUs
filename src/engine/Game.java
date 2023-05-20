@@ -26,10 +26,13 @@ import exceptions.NotEnoughActionsException;
 
 public class Game {
 
+	public static final int GRID_WIDTH = 15;
+	public static final int GRID_HEIGHT = 15;
+
 	public static ArrayList<Hero> availableHeroes = new ArrayList<Hero>();
 	public static ArrayList<Hero> heroes = new ArrayList<Hero>();
 	public static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
-	public static Cell[][] map = new Cell[15][15];
+	public static Cell[][] map = new Cell[GRID_HEIGHT][GRID_WIDTH];
 	private static ArrayList<GameListener> gameListeners = new ArrayList<>();
 
 	public static void loadHeroes(String filePath) throws IOException {
@@ -73,11 +76,11 @@ public class Game {
 		Point p = h.getLocation();
 		for (int i = -1; i <= 1; i++) {
 			int cx = p.x + i;
-			if (cx >= 0 && cx <= 14) {
+			if (cx >= 0 && cx <= GRID_HEIGHT - 1) {
 				for (int j = -1; j <= 1; j++) {
 					int cy = p.y + j;
-					if (cy >= 0 && cy <= 14) {
-						if (cy >= 0 && cy <= map.length - 1) {
+					if (cy >= 0 && cy <= GRID_WIDTH - 1) {
+						if (cy >= 0 && cy <= GRID_WIDTH - 1) {
 							map[cx][cy].setVisible(true);
 						}
 					}
