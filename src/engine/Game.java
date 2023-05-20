@@ -30,6 +30,7 @@ public class Game {
 	public static ArrayList<Hero> heroes = new ArrayList<Hero>();
 	public static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	public static Cell[][] map = new Cell[15][15];
+	private static ArrayList<GameListener> gameListeners = new ArrayList<>();
 
 	public static void loadHeroes(String filePath) throws IOException {
 		availableHeroes = new ArrayList<>();
@@ -95,7 +96,7 @@ public class Game {
 		} while ((map[x][y] instanceof CharacterCell && ((CharacterCell) map[x][y]).getCharacter() != null)
 				|| (map[x][y] instanceof CollectibleCell) || (map[x][y] instanceof TrapCell));
 		z.setLocation(new Point(x, y));
-		map[x][y] = new CharacterCell(z);
+		setCell(x, y, new CharacterCell(z));
 	}
 
 	public static boolean checkWin() {
@@ -135,7 +136,7 @@ public class Game {
 		availableHeroes.remove(h);
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				map[i][j] = new CharacterCell(null);
+				setCell(i, j, new CharacterCell(null));
 			}
 		}
 
@@ -160,7 +161,7 @@ public class Game {
 				y = ((int) (Math.random() * map[x].length));
 			} while ((map[x][y] instanceof CharacterCell && ((CharacterCell) map[x][y]).getCharacter() != null)
 					|| (map[x][y] instanceof CollectibleCell) || (map[x][y] instanceof TrapCell));
-			map[x][y] = new CollectibleCell(v);
+			setCell(x, y, new CollectibleCell(v));
 		}
 		for (int i = 0; i < 5; i++) {
 			Supply v = new Supply();
@@ -170,7 +171,7 @@ public class Game {
 				y = ((int) (Math.random() * map[x].length));
 			} while ((map[x][y] instanceof CharacterCell && ((CharacterCell) map[x][y]).getCharacter() != null)
 					|| (map[x][y] instanceof CollectibleCell) || (map[x][y] instanceof TrapCell));
-			map[x][y] = new CollectibleCell(v);
+			setCell(x, y, new CollectibleCell(v));
 		}
 	}
 
@@ -182,8 +183,27 @@ public class Game {
 				y = ((int) (Math.random() * map[x].length));
 			} while ((map[x][y] instanceof CharacterCell && ((CharacterCell) map[x][y]).getCharacter() != null)
 					|| (map[x][y] instanceof CollectibleCell) || (map[x][y] instanceof TrapCell));
-			map[x][y] = new TrapCell();
+			setCell(x, y, new TrapCell());
 		}
+	}
+
+
+	public static void setCell(int x, int y, Cell newCell) {
+		Cell oldCell = map[x][y];
+		map[x][y] = newCell;
+		for (GameListener listener : gameListeners) {
+			listener.onCellChanged(x, y, oldCell, newCell);
+		}
+	}
+
+	// Subscribe
+	public static void addGameListener(GameListener listener) {
+		gameListeners.add(listener);
+	}
+
+	// unsubscribe
+	public static void removeGameListner(GameListener listener) {
+		gameListeners.remove(listener);
 	}
 	
 }

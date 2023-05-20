@@ -90,13 +90,13 @@ public abstract class Hero extends Character {
 		} else if (Game.map[tX][tY] instanceof TrapCell) {
 			this.setCurrentHp(this.getCurrentHp() - ((TrapCell) Game.map[tX][tY]).getTrapDamage());
 		}
-		Game.map[getLocation().x][getLocation().y] = new CharacterCell(null);
+		Game.setCell(getLocation().x, getLocation().y, new CharacterCell(null));
 		this.actionsAvailable--;
 
 		if (this.getCurrentHp() ==  0) {
 			return;
 		}
-		Game.map[tX][tY] = new CharacterCell(this);
+		Game.setCell(tX, tY, new CharacterCell(this));
 		setLocation(new Point(tX, tY));
 		Game.adjustVisibility(this);
 	}
