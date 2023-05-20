@@ -9,7 +9,8 @@
             "name": "GameView",
             "request": "launch",
             "mainClass": "views.GameView",
-            "projectName": "TheLastOfUs"
+            "projectName": "TheLastOfUs",
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
