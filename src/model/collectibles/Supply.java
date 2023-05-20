@@ -1,9 +1,7 @@
 package model.collectibles;
 
 import model.characters.Hero;
-import model.world.CharacterCell;
-import engine.Game;
-import model.characters.Character;
+
 
 public class Supply implements Collectible {
 

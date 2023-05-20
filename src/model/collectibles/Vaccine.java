@@ -3,7 +3,7 @@ package model.collectibles;
 import java.awt.Point;
 
 import engine.Game;
-import model.characters.Character;
+
 import model.characters.Hero;
 import model.world.Cell;
 import model.world.CharacterCell;

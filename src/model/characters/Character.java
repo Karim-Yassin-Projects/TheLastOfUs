@@ -87,5 +87,23 @@ public abstract class Character {
 		}
 		Game.map[p.x][p.y] = new CharacterCell(null);
 	}
-
+	public String getImage(){
+		return "C:\\Projects\\CSEN401\\TheLastOfUs\\images/" + name.toLowerCase().replace(" ", "") + ".png";
+	}
+	public String getType(String s){
+		switch(s){
+			case "FIGH": return "Fighter";
+			case "MED": return "Medic";
+			case "EXP": return "Explorer";
+			default: return "?";
+		}
+	}
+	public String getHtmlDescription(){
+		return
+            "<html>"
+            + getName()
+         + "<br/>Maximum Health: <span color='green'>" + getMaxHp() + "</span>"
+         + "<br />Attack Damage: <span color='red'>" + getAttackDmg() + "</span>"
+         + "</html>";
+	}
 }

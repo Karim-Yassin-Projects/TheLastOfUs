@@ -1,5 +1,6 @@
 package model.characters;
 
+
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -149,5 +150,37 @@ public abstract class Hero extends Character {
 		this.vaccineInventory.get(0).use(this);
 		actionsAvailable--;
 	}
-
+	public String getType(){
+		if(this instanceof Fighter){
+			return "Fighter";
+		}
+		if(this instanceof Medic){
+			return "Medic";
+		}
+		if(this instanceof Explorer){
+			return "Explorer";
+		}
+		return "";
+	}
+	public String getHtmlDescription(){
+		return
+            "<html>"
+            + getName()
+		+ "<br /Type: <span color = 'grey'>" + getType()
+         + "<br />Maximum Health: <span color='green'>" + getMaxHp() + "</span>"
+         + "<br />Attack Damage: <span color='red'>" + getAttackDmg() + "</span>"
+		 + "<br /Max Actions: <span color = 'black'>" + getMaxActions() + "</span>"
+         + "</html>";
+	}
+	public String getHtmlDescriptionInGame(){
+		return
+            "<html>"
+            + getName()
+		+ "<br /Type: <span color = 'black'>" + getType()
+         + "<br />Attack Damage: <span color='black'>" + getAttackDmg() + "</span>"
+		 + "<br />Actions Avaialable: <span color = 'black'>" + getActionsAvailable() + "</span>"
+		 + "<br />Supplies: <span color = 'black'>" + getSupplyInventory().size() + "</span>"
+		 + "<br />Vaccines: <span color = 'black'>" + getVaccineInventory().size() + "</span>"
+         + "</html>";
+	}
 }
