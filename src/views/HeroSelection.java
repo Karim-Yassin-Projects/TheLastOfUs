@@ -15,7 +15,7 @@ public class HeroSelection extends JPanel {
 
     public HeroSelection() throws IOException {
         super();
-        Game.loadHeroes("C:\\Projects\\CSEN401\\Milestone2-Solution\\Heroes.csv");
+        Game.loadHeroes("Heroes.csv");
         this.setLayout(new GridLayout(Game.availableHeroes.size(), 1));
         for (Hero h : Game.availableHeroes) {
             Icon icon = new ImageIcon(h.getImage(), h.getName());
