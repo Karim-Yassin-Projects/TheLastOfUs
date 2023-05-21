@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import engine.Game;
 import model.characters.Character;
 import model.characters.Hero;
+import model.characters.Zombie;
 import model.world.Cell;
 import model.world.CharacterCell;
 import model.world.CollectibleCell;
@@ -56,14 +57,25 @@ public class MapGrid extends JPanel {
                     Game.setSelectedHero(hero);
                 }
             }
+            else if(c instanceof Zombie){
+                Zombie z = (Zombie)c;
+                if(Game.getSelectedHero() == null){
+                    return;
+                }
+                else{
+                    Game.getSelectedHero().setTarget(z);
+                }
+
+            }
+            else{
+                return;
+            }
         }
         
     }
 
     public static void updateCell(int i, int j) {
         JButton button = buttons.get(i*15 + j);
-        // JButton button = new JButton();
-        //  Component[] component = getComponents();
         if (Game.map[14 - i][j].isVisible()) {
             button.setBackground(Color.WHITE);
         } else {
