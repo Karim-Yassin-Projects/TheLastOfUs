@@ -25,11 +25,12 @@ import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
 
 public class Game {
-
+	private static Hero selectedHero;
 	public static ArrayList<Hero> availableHeroes = new ArrayList<Hero>();
 	public static ArrayList<Hero> heroes = new ArrayList<Hero>();
 	public static ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	public static Cell[][] map = new Cell[15][15];
+	private static ArrayList<GameListener> gameListeners = new ArrayList<>();
 
 	public static void loadHeroes(String filePath) throws IOException {
 		availableHeroes = new ArrayList<>();
@@ -183,6 +184,26 @@ public class Game {
 			} while ((map[x][y] instanceof CharacterCell && ((CharacterCell) map[x][y]).getCharacter() != null)
 					|| (map[x][y] instanceof CollectibleCell) || (map[x][y] instanceof TrapCell));
 			map[x][y] = new TrapCell();
+		}
+	}
+	public static Hero getSelectedHero() {
+		return selectedHero;
+	}
+	
+	public void addGameListerner(GameListener listener){
+		gameListeners.add(listener);
+	}
+	public void removeGameListener(GameListener listener){
+		gameListeners.remove(listener);
+	}
+	public static void setSelectedHero(Hero selectedHero) {
+		if(selectedHero == Game.selectedHero){
+			return;
+		}
+		Hero oldHero = Game.selectedHero;
+		Game.selectedHero = selectedHero;
+		for(GameListener gameListener : gameListeners){
+			gameListener.onSelectedHeroChange(oldHero, Game.selectedHero);
 		}
 	}
 	

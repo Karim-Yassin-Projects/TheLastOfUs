@@ -2,6 +2,7 @@ package model.collectibles;
 
 import java.awt.Point;
 
+
 import engine.Game;
 
 import model.characters.Hero;
@@ -27,5 +28,9 @@ public class Vaccine implements Collectible {
 		((CharacterCell) cell).setCharacter(tba);
 		tba.setLocation(p);
 	}
-
+	@Override
+	public String getImage() {
+		return "images/vaccine.png";
+	}
+	
 }

@@ -1,74 +1,62 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
 
-import java.awt.Color;
-import java.awt.GridLayout;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import engine.Game;
-import model.characters.Hero;
-import model.characters.Zombie;
-import model.collectibles.Vaccine;
-import model.world.CharacterCell;
-import model.world.CollectibleCell;
+import exceptions.MovementException;
+import exceptions.NotEnoughActionsException;
+import model.characters.Direction;
 
 public class GameMainView extends JPanel {
-    private JPanel map;
     private SidePanel sidePanel;
     private ActionsPanel actionsPanel;
+    private MapGrid mapGrid;
     public GameMainView() {
         super();
         this.setLayout(new BorderLayout());
         actionsPanel = new ActionsPanel();
         this.add(actionsPanel, BorderLayout.NORTH);
-        
-        map = new JPanel();
-        map.setLayout(new GridLayout(15, 15));
-        map.setBackground(Color.DARK_GRAY);
+
         sidePanel = new SidePanel();
         add(sidePanel, BorderLayout.EAST);
+        
+        mapGrid = new MapGrid();
+        add(mapGrid, BorderLayout.CENTER);
 
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
-                JButton button = new JButton();
-                if (Game.map[14 - i][j].isVisible()) {
-                    button.setBackground(Color.WHITE);
-                } else {
-                    button.setBackground(Color.DARK_GRAY);
-                }
-                if (Game.map[14 - i][j] instanceof CollectibleCell) {
-                    CollectibleCell cell = (CollectibleCell) Game.map[14 - i][j];
-                    if (cell.getCollectible() instanceof Vaccine) {
-                        Icon icon = new ImageIcon("C:\\Projects\\CSEN401\\TheLastOfUs\\images\\vaccine.png");
-                        button.setIcon(icon);
-                    } else {
-                        Icon icon = new ImageIcon("C:\\Projects\\CSEN401\\TheLastOfUs\\images\\supply.png");
-                        button.setIcon(icon);
-                    }
-
-                } else if (Game.map[14 - i][j] instanceof CharacterCell) {
-                    CharacterCell cell = (CharacterCell) Game.map[14 - i][j];
-                    if (cell.getCharacter() instanceof Zombie) {
-                        Icon icon = new ImageIcon("C:\\Projects\\CSEN401\\TheLastOfUs\\images\\zombie.png");
-                        button.setIcon(icon);
-                    } else if (cell.getCharacter() instanceof Hero) {
-                        Icon icon = new ImageIcon(cell.getCharacter().getImage());
-                        button.setIcon(icon);
-                    }
-                }
-
-                map.add(button);
-
-            }
+        
 
         }
-        add(map, BorderLayout.CENTER);
-
+        public void keyPressed(KeyEvent e) throws MovementException, NotEnoughActionsException {
+            Point p = Game.getSelectedHero().getLocation();
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_UP:
+                        Game.getSelectedHero().move(Direction.UP);
+                        MapGrid.updateCell(p.x,p.y);
+                        MapGrid.updateCell(p.x+1, p.y);
+                        break;
+                    case KeyEvent.VK_DOWN:
+                         Game.getSelectedHero().move(Direction.DOWN);
+                          MapGrid.updateCell(p.x,p.y);
+                          MapGrid.updateCell(p.x-1, p.y);
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        Game.getSelectedHero().move(Direction.LEFT);
+                         MapGrid.updateCell(p.x,p.y);
+                         MapGrid.updateCell(p.x,p.y-1);
+                        
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        Game.getSelectedHero().move(Direction.DOWN);
+                        MapGrid.updateCell(p.x,p.y);
+                        MapGrid.updateCell(p.x,p.y+1);
+                        break;
+                    default:
+                        MapGrid.updateCell(p.x,p.y);
+                }
+            }
     }
 
-}

@@ -9,7 +9,6 @@ import engine.Game;
 import model.characters.Hero;
 
 public class SidePanel extends JPanel {
-    private HeroStatsPanel heroStatsPanel;
 
     public SidePanel() {
         super();

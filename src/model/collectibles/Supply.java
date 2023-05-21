@@ -14,5 +14,8 @@ public class Supply implements Collectible {
 	public void use(Hero h) {
 		h.getSupplyInventory().remove(this);
 	}
-
+	@Override
+	public String getImage() {
+		return "images/supply.png";
+	}
 }
