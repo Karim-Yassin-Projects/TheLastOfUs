@@ -85,7 +85,7 @@ public abstract class Character {
 		} else if (this instanceof Hero) {
 			Game.heroes.remove(this);
 		}
-		Game.map[p.x][p.y] = new CharacterCell(null);
+		Game.setCell(p.x, p.y, new CharacterCell(null));
 	}
 	public String getImage(){
 		return "C:\\Projects\\CSEN401\\TheLastOfUs\\images/" + name.toLowerCase().replace(" ", "") + ".png";
