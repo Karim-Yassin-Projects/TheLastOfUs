@@ -6,11 +6,11 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import engine.Game;
 import exceptions.InvalidTargetException;
+import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
 
 public class ActionsPanel extends JPanel{
@@ -38,14 +38,23 @@ public class ActionsPanel extends JPanel{
         JButton cure = new JButton();
         cure.setBackground(Color.WHITE);
         cure .setText("Cure");
-        cure.addMouseListener(new MouseAdapter() {
-            try{
-                Game.getSelectedHero().cure();
+        cure.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try{
+                    Game.getSelectedHero().cure(); 
+                }
+                catch(InvalidTargetException e1){
+                    e1.getMessage();
+                }
+                catch(NoAvailableResourcesException e2){
+                    e2.getMessage();
+                }
+                catch(NotEnoughActionsException e3){
+                    e3.getMessage();
+                }
             }
-            catch(InvalidTargetException e1){
-                e1.getMessage();
-            }
-        });
+    });
 
         JButton useSpecial = new JButton();
         useSpecial.setText("Use Special Action");
