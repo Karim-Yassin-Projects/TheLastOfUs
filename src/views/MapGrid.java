@@ -33,7 +33,7 @@ public class MapGrid extends JPanel {
                 button.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        handleClick(x, y);
+                        handleClick(x, y, e.getButton() == MouseEvent.BUTTON3);
                     }
                 });
                 add(button);
@@ -48,6 +48,18 @@ public class MapGrid extends JPanel {
             }
 
             @Override
+            public void onTargetChanged(Character oldTarget, Character newTarget) {
+                if (oldTarget != null) {
+                    Point loc = oldTarget.getLocation();
+                    updateCell(14 - loc.x, loc.y);
+                }
+                if (newTarget != null) {
+                    Point loc = newTarget.getLocation();
+                    updateCell(14 - loc.x, loc.y);
+                }
+            }
+
+            @Override
             public void onSelectedHeroChange(Hero oldHero, Hero newHero) {
                 if (oldHero != null) {
                     Point loc = oldHero.getLocation();
@@ -59,21 +71,31 @@ public class MapGrid extends JPanel {
                 }
             }
         });
-        
+
     }
 
-    public void handleClick(int i, int j) {
+    public void handleClick(int i, int j, boolean isRightbutton) {
         Cell cell = Game.map[14 - i][j];
         if (cell instanceof CharacterCell) {
             CharacterCell characterCell = (CharacterCell) cell;
             Character c = characterCell.getCharacter();
             if (c instanceof Hero) {
                 Hero hero = (Hero) c;
-                if (Game.getSelectedHero() == hero) {
-                    Game.setSelectedHero(null);
+
+                if (isRightbutton) {
+                    if (Game.getSelectedHero() == null) {
+                        return;
+                    } else {
+                        Game.getSelectedHero().setTarget(hero);;
+                    }
                 } else {
-                    Game.setSelectedHero(hero);
+                    if (Game.getSelectedHero() == hero) {
+                        Game.setSelectedHero(null);
+                    } else {
+                        Game.setSelectedHero(hero);
+                    }
                 }
+
             } else if (c instanceof Zombie) {
                 Zombie z = (Zombie) c;
                 if (Game.getSelectedHero() == null) {
@@ -81,7 +103,6 @@ public class MapGrid extends JPanel {
                 } else {
                     Game.getSelectedHero().setTarget(z);
                 }
-
             }
         }
 
@@ -94,17 +115,30 @@ public class MapGrid extends JPanel {
         if (cell instanceof CollectibleCell) {
             CollectibleCell colCell = (CollectibleCell) cell;
             updateCollectibleCell(button, colCell);
-            setButtonBorder(button, Color.BLACK);
+            setButtonBorder(button, false, false);
         } else if (cell instanceof CharacterCell) {
             CharacterCell charCell = (CharacterCell) cell;
             updateCharacterCell(button, charCell);
         } else {
-            setButtonBorder(button, Color.BLACK);
+            setButtonBorder(button, false, false);
         }
     }
 
-    private static void setButtonBorder(JButton button, Color color) {
-        button.setBorder(BorderFactory.createLineBorder(color, 1));
+    private static void setButtonBorder(JButton button, boolean isselected, boolean isTarget) {
+        Color color1;
+        int width = isTarget || isselected ? 3 : 1;
+        
+        if (isselected && isTarget) {
+            color1 = new Color(128, 0, 255, 255);
+            
+        } else if (isselected) {
+            color1 = Color.BLUE;
+        } else if (isTarget) {
+            color1 = Color.RED;
+        } else {
+            color1 = Color.GRAY;
+        }
+        button.setBorder(BorderFactory.createMatteBorder(width, width, width, width, color1));
     }
 
     private static void updateCharacterCell(JButton button, CharacterCell charCell) {
@@ -116,17 +150,17 @@ public class MapGrid extends JPanel {
             boolean isTarget = Game.getSelectedHero() != null && character == Game.getSelectedHero().getTarget();
 
             if (isSelected && isTarget) {
-                setButtonBorder(button, new Color(255, 0, 255, 255));
+                setButtonBorder(button, isSelected, isTarget);
             } else if (isSelected) {
-                setButtonBorder(button, Color.BLUE);
+                setButtonBorder(button, isSelected, isTarget);
             } else if (isTarget) {
-                setButtonBorder(button, Color.RED);
+                setButtonBorder(button, isSelected, isTarget);
             } else {
-                setButtonBorder(button, Color.BLACK);
+                setButtonBorder(button, isSelected, isTarget);
             }
         } else {
             button.setIcon(new ImageIcon());
-            setButtonBorder(button, Color.BLACK);
+            setButtonBorder(button,false,false);
         }
     }
 

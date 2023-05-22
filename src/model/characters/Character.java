@@ -51,7 +51,11 @@ public abstract class Character {
 	}
 
 	public void setTarget(Character target) {
+		Character oldTarget = this.target;
 		this.target = target;
+		if (this == Game.getSelectedHero()) {
+			Game.onTargetChanged(oldTarget, target);
+		}
 	}
 
 	public String getName() {

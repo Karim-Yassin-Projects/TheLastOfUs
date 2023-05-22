@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.characters.Character;
 import model.characters.Explorer;
 import model.characters.Fighter;
 import model.characters.Hero;
@@ -200,11 +201,15 @@ public class Game {
 		if (selectedHero == Game.selectedHero) {
 			return;
 		}
+
 		Hero oldHero = Game.selectedHero;
 		Game.selectedHero = selectedHero;
 		for (GameListener gameListener : gameListeners) {
 			gameListener.onSelectedHeroChange(oldHero, Game.selectedHero);
 		}
+		Character oldTarget = oldHero == null ? null : oldHero.getTarget();
+		Character newTarget = selectedHero == null ? null : selectedHero.getTarget();
+		onTargetChanged(oldTarget, newTarget);
 	}
 
 	public static void setCell(int i, int j, Cell newCell) {
@@ -215,6 +220,14 @@ public class Game {
 		map[i][j] = newCell;
 		for (GameListener gameListener : gameListeners) {
 			gameListener.onCellChanged(i, j, oldCell, newCell);
+		}
+	}
+	public static void onTargetChanged(Character oldCharacter, Character newCharacter){
+		if(oldCharacter == newCharacter){
+			return;
+		}
+		for(GameListener listener : gameListeners){
+			listener.onTargetChanged(oldCharacter, newCharacter);
 		}
 	}
 }
