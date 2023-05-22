@@ -3,7 +3,6 @@ package views;
 import java.io.IOException;
 
 import javax.swing.JFrame;
-
 import engine.Game;
 import model.characters.Hero;
 
@@ -29,9 +28,12 @@ public class GameView extends JFrame {
             }
         });
         this.add(heroSelection);
+        
         this.setVisible(true);
 
     }
+
+    
 
     public static void main(String[] args) throws IOException {
         new GameView();

@@ -5,12 +5,12 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
 import engine.Game;
 import engine.GameListener;
 import model.characters.Character;
@@ -71,7 +71,7 @@ public class MapGrid extends JPanel {
                 }
             }
         });
-
+        
     }
 
     public void handleClick(int i, int j, boolean isRightbutton) {

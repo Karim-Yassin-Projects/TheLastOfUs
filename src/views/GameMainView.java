@@ -1,16 +1,21 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import engine.Game;
 import exceptions.MovementException;
 import exceptions.NotEnoughActionsException;
 import model.characters.Direction;
-
 public class GameMainView extends JPanel {
     private SidePanel sidePanel;
     private ActionsPanel actionsPanel;
@@ -27,34 +32,51 @@ public class GameMainView extends JPanel {
 
         mapGrid = new MapGrid();
         add(mapGrid, BorderLayout.CENTER);
+
+        setupKeyboardActions();
     }
 
-    public void keyPressed(KeyEvent e) throws MovementException, NotEnoughActionsException {
-        Point p = Game.getSelectedHero().getLocation();
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP:
-                Game.getSelectedHero().move(Direction.UP);
-                // MapGrid.updateCell(p.x,p.y);
-                // MapGrid.updateCell(p.x+1, p.y);
-                break;
-            case KeyEvent.VK_DOWN:
-                Game.getSelectedHero().move(Direction.DOWN);
-                // MapGrid.updateCell(p.x,p.y);
-                // MapGrid.updateCell(p.x-1, p.y);
-                break;
-            case KeyEvent.VK_LEFT:
-                Game.getSelectedHero().move(Direction.LEFT);
-                // MapGrid.updateCell(p.x,p.y);
-                // MapGrid.updateCell(p.x,p.y-1);
+    private void setupKeyboardActions() {
+        ActionMap actionMap = getActionMap();
+        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        InputMap inputMap = getInputMap(condition);
+        
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true), "up");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "up");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "down");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true), "down");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "left");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "right");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "right");
+        
+        actionMap.put("up", new MoveAction(this, Direction.UP));
+        actionMap.put("down", new MoveAction(this, Direction.DOWN));
+        actionMap.put("left", new MoveAction(this, Direction.LEFT));
+        actionMap.put("right", new MoveAction(this, Direction.RIGHT));
+    }
 
-                break;
-            case KeyEvent.VK_RIGHT:
-                Game.getSelectedHero().move(Direction.DOWN);
-                // MapGrid.updateCell(p.x,p.y);
-                // MapGrid.updateCell(p.x,p.y+1);
-                break;
-            default:
-                // MapGrid.updateCell(p.x,p.y);
+    private static class MoveAction extends AbstractAction {
+        private final Direction direction;
+        private final GameMainView view;
+
+        public MoveAction(GameMainView view, Direction direction) {
+            super();
+            this.view = view;
+            this.direction = direction;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (Game.getSelectedHero() == null) {
+                return;
+            }
+            try {
+                Game.getSelectedHero().move(direction);
+            } catch (MovementException | NotEnoughActionsException me) {
+                String message = me.getMessage();
+                JOptionPane.showMessageDialog(view, message, "Movement Error", JOptionPane.ERROR_MESSAGE, null);
+            }
         }
     }
 }
