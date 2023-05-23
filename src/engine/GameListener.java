@@ -14,7 +14,7 @@ public abstract class GameListener {
     public void onTargetChanged(Character oldTarget, Character newTarget) {
 
     }
-    public void onCellVisibilityChanged(int i, int j, Cell cell){
-        
+    public void onCellEvent(int i, int j, Cell cell){
+
     }
 }

@@ -1,5 +1,6 @@
 package model.world;
 
+import engine.Game;
 import model.characters.Character;
 
 public class CharacterCell extends Cell {
@@ -21,7 +22,11 @@ public class CharacterCell extends Cell {
 	}
 
 	public void setCharacter(Character character) {
+		if (this.character == character) {
+			return;
+		}
 		this.character = character;
+		Game.handleCellEvent(this);
 	}
 
 	public boolean isSafe() {
@@ -29,7 +34,11 @@ public class CharacterCell extends Cell {
 	}
 
 	public void setSafe(boolean isSafe) {
+		if (this.isSafe == isSafe) {
+			return;
+		}
 		this.isSafe = isSafe;
+		Game.handleCellEvent(this);
 	}
 
 }

@@ -22,7 +22,7 @@ public abstract class Cell {
 			return;
 		}
 		this.isVisible = isVisible;
-		Game.setCellVisibility(this);
+		Game.handleCellEvent(this);
 	}
 	public Point getLocation() {
 		return location;

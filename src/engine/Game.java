@@ -232,12 +232,12 @@ public class Game {
 			listener.onTargetChanged(oldCharacter, newCharacter);
 		}
 	}
-	public static void setCellVisibility(Cell cell){
+	public static void handleCellEvent(Cell cell){
 		if(cell.getLocation() == null){
 			return;
 		}
 		for(GameListener listener : gameListeners){
-			listener.onCellVisibilityChanged(cell.getLocation().x, cell.getLocation().y, cell);
+			listener.onCellEvent(cell.getLocation().x, cell.getLocation().y, cell);
 		}
 	}
 }
