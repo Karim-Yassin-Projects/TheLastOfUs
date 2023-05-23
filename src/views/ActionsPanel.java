@@ -66,6 +66,18 @@ public class ActionsPanel extends JPanel {
         endTurnButton.setText("End Turn");
         endTurnButton.setBackground(Color.WHITE);
 
+        endTurnButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Game.endTurn();
+                } catch (NotEnoughActionsException | InvalidTargetException e1) {
+                    String message = e1.getMessage();
+                    JOptionPane.showMessageDialog(that, message, "End Turn Error", JOptionPane.ERROR_MESSAGE, null);
+                }
+            }
+        });
+
         this.add(endTurnButton);
         this.add(attackButton);
         this.add(cureButton);
