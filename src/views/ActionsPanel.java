@@ -91,6 +91,7 @@ public class ActionsPanel extends JPanel {
         this.add(attackButton);
         this.add(cureButton);
         this.add(useSpecialButton);
+        enableOrDisableButtons();
         Game.addGameListener(new GameListener() {
             @Override
             public void onSelectedHeroChange(Hero oldHero, Hero newHero) {

@@ -220,6 +220,9 @@ public class Game {
 		map[i][j] = newCell;
 		Point p = new Point(i, j);
 		newCell.setLocation(p);
+		if (oldCell != null && oldCell.isVisible()) {
+			newCell.setVisible(true);
+		}
 		for (GameListener gameListener : gameListeners) {
 			gameListener.onCellChanged(i, j, oldCell, newCell);
 		}
