@@ -97,7 +97,7 @@ public abstract class Character {
 			Game.zombies.remove(this);
 			Game.spawnNewZombie();
 		} else if (this instanceof Hero) {
-			Game.heroes.remove(this);
+			Game.removeHero((Hero)this);
 		}
 		Game.setCell(p.x, p.y, new CharacterCell(null));
 	}

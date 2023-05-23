@@ -15,6 +15,12 @@ public abstract class GameListener {
 
     }
     public void onCellEventChanged(int i, int j, Cell cell){
+
+    }
+    public void onHeroAdded(Hero hero){
+
+    }
+    public void onHeroRemoved(Hero hero){
         
     }
 }

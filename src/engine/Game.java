@@ -130,7 +130,7 @@ public class Game {
 	}
 
 	public static void startGame(Hero h) {
-		heroes.add(h);
+		addHero(h);
 		availableHeroes.remove(h);
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
@@ -239,6 +239,24 @@ public class Game {
 		Point p = cell.getLocation();
 		for(GameListener listener : gameListeners){
 			listener.onCellEventChanged(p.x, p.y, cell);
+		}
+	}
+	public static void addHero(Hero h){
+		if(heroes.contains(h)){
+			return;
+		}
+		heroes.add(h);
+		for(GameListener listener : gameListeners){
+			listener.onHeroAdded(h);
+		}
+	}
+	public static void removeHero(Hero h){
+		if(!heroes.contains(h)){
+			return;
+		}
+		heroes.remove(h);
+		for(GameListener listener : gameListeners){
+			listener.onHeroRemoved(h);
 		}
 	}
 }

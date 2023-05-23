@@ -19,6 +19,7 @@ import model.characters.Hero;
 public class HeroStatsPanel extends JPanel {
     private HealthBar healthBar;
     private JLabel statusLabel;
+    private Hero hero;
     public HeroStatsPanel(Hero hero) {
         super();
         this.setLayout(new BorderLayout());
@@ -54,5 +55,11 @@ public class HeroStatsPanel extends JPanel {
                 }
             }
         });
+    }
+    public Hero getHero() {
+        return hero;
+    }
+    public void setHero(Hero hero) {
+        this.hero = hero;
     }
 }

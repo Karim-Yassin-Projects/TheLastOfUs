@@ -10,16 +10,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import engine.Game;
+import engine.GameListener;
 import exceptions.InvalidTargetException;
 import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
+import model.characters.Hero;
 
 public class ActionsPanel extends JPanel {
+    private JButton attackButton;
+    private JButton cureButton;
+    private JButton useSpecialButton;
+    private JButton endTurnButton;
     public ActionsPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(Color.BLACK);
-        JButton attackButton = new JButton();
+        attackButton = new JButton();
         ActionsPanel that = this;
         attackButton.setBackground(Color.WHITE);
         attackButton.setText("Attack");
@@ -34,7 +40,7 @@ public class ActionsPanel extends JPanel {
                 }
             }
         });
-        JButton cureButton = new JButton();
+        cureButton = new JButton();
         cureButton.setBackground(Color.WHITE);
         cureButton.setText("Cure");
         cureButton.addMouseListener(new MouseAdapter() {
@@ -49,7 +55,7 @@ public class ActionsPanel extends JPanel {
             }
         });
 
-        JButton useSpecialButton = new JButton();
+        useSpecialButton = new JButton();
         useSpecialButton.setText("Use Special Action");
         useSpecialButton.setBackground(Color.WHITE);
        
@@ -66,7 +72,7 @@ public class ActionsPanel extends JPanel {
         });
 
 
-        JButton endTurnButton = new JButton();
+        endTurnButton = new JButton();
         endTurnButton.setText("End Turn");
         endTurnButton.setBackground(Color.WHITE);
         endTurnButton.addMouseListener(new MouseAdapter() {
@@ -85,5 +91,17 @@ public class ActionsPanel extends JPanel {
         this.add(attackButton);
         this.add(cureButton);
         this.add(useSpecialButton);
+        Game.addGameListener(new GameListener() {
+            @Override
+            public void onSelectedHeroChange(Hero oldHero, Hero newHero) {
+                enableOrDisableButtons();
+            }
+        });
+    }
+    public void enableOrDisableButtons(){
+        boolean heroIsSelected = Game.getSelectedHero() != null;
+        attackButton.setEnabled(heroIsSelected);
+        cureButton.setEnabled(heroIsSelected);
+        useSpecialButton.setEnabled(heroIsSelected);
     }
 }
