@@ -58,6 +58,10 @@ public class MapGrid extends JPanel {
                     updateCell(14 - loc.x, loc.y);
                 }
             }
+            @Override
+            public void onCellVisibilityChanged(int i, int j, Cell cell) {
+                updateCell(14-i, j);
+            }
 
             @Override
             public void onSelectedHeroChange(Hero oldHero, Hero newHero) {
