@@ -6,67 +6,84 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import engine.Game;
+import engine.GameListener;
 import exceptions.InvalidTargetException;
 import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
+import model.characters.Hero;
 
-public class ActionsPanel extends JPanel{
+public class ActionsPanel extends JPanel {
+    private JButton endTurnButton;
+    private JButton useSpecialButton;
+    private JButton cureButton;
+    private JButton attackButton;
+
     public ActionsPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(Color.BLACK);
-        JButton attack = new JButton();
-        attack.setBackground(Color.WHITE);
-        attack.setText("Attack");
-        attack.addMouseListener(new MouseAdapter() {
+        attackButton = new JButton();
+        attackButton.setBackground(Color.WHITE);
+        attackButton.setText("Attack");
+        attackButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                try{
+                try {
                     Game.getSelectedHero().attack();
-                }
-                catch(InvalidTargetException s){
+                } catch (InvalidTargetException s) {
                     s.getMessage();
                 } catch (NotEnoughActionsException e1) {
                     e1.getMessage();
                 }
-                
+
             }
         });
-        JButton cure = new JButton();
-        cure.setBackground(Color.WHITE);
-        cure .setText("Cure");
-        cure.addMouseListener(new MouseAdapter(){
+        ActionsPanel that = this;
+        cureButton = new JButton();
+        cureButton.setBackground(Color.WHITE);
+        cureButton.setText("Cure");
+        cureButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                try{
-                    Game.getSelectedHero().cure(); 
-                }
-                catch(InvalidTargetException e1){
-                    e1.getMessage();
-                }
-                catch(NoAvailableResourcesException e2){
-                    e2.getMessage();
-                }
-                catch(NotEnoughActionsException e3){
-                    e3.getMessage();
+                try {
+                    Game.getSelectedHero().cure();
+                } catch (NoAvailableResourcesException | InvalidTargetException | NotEnoughActionsException e1) {
+                    String message = e1.getMessage();
+                    JOptionPane.showMessageDialog(that, message, "Cure Error", JOptionPane.ERROR_MESSAGE, null);
                 }
             }
-    });
+        });
 
-        JButton useSpecial = new JButton();
-        useSpecial.setText("Use Special Action");
-        useSpecial.setBackground(Color.WHITE);
-        
-        JButton endTurn = new JButton();
-        endTurn.setText("End Turn");
-        endTurn.setBackground(Color.WHITE);
+        useSpecialButton = new JButton();
+        useSpecialButton.setText("Use Special Action");
+        useSpecialButton.setBackground(Color.WHITE);
 
-        this.add(endTurn);
-        this.add(attack);
-        this.add(cure);
-        this.add(useSpecial);
+        endTurnButton = new JButton();
+        endTurnButton.setText("End Turn");
+        endTurnButton.setBackground(Color.WHITE);
+
+        this.add(endTurnButton);
+        this.add(attackButton);
+        this.add(cureButton);
+        this.add(useSpecialButton);
+
+        Game.addGameListener(new GameListener() {
+            @Override
+            public void onSelectedHeroChange(Hero oldHero, Hero newHero) {
+                enableOrDisableButtons();
+            }
+        });
+        enableOrDisableButtons();
+    }
+
+    private void enableOrDisableButtons() {
+        boolean heroSelected = Game.getSelectedHero() != null;
+        attackButton.setEnabled(heroSelected);
+        cureButton.setEnabled(heroSelected);
+        useSpecialButton.setEnabled(heroSelected);
     }
 }
