@@ -14,6 +14,7 @@ public class Vaccine implements Collectible {
 	@Override
 	public void pickUp(Hero h) {
 		h.getVaccineInventory().add(this);
+		h.raiseVaccineCountChange(h.getVaccineInventory().size()-1);
 	}
 
 	@Override
@@ -27,6 +28,7 @@ public class Vaccine implements Collectible {
 		Game.heroes.add(tba);
 		((CharacterCell) cell).setCharacter(tba);
 		tba.setLocation(p);
+		h.raiseVaccineCountChange(h.getVaccineInventory().size()+1);
 	}
 	@Override
 	public String getImage() {

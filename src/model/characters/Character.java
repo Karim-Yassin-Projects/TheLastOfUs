@@ -1,6 +1,7 @@
 package model.characters;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 import model.world.CharacterCell;
 import engine.Game;
@@ -15,6 +16,7 @@ public abstract class Character {
 	private Point location;
 	private int attackDmg;
 	private Character target;
+	protected ArrayList<CharacterListener> listeners = new ArrayList<>();
 
 	public Character(String name, int maxHp, int attackDamage) {
 		this.name = name;
@@ -28,14 +30,23 @@ public abstract class Character {
 	}
 
 	public void setCurrentHp(int currentHp) {
+		if (currentHp == this.currentHp) {
+			return;
+		}
+		int oldValue = this.currentHp;
 		if (currentHp <= 0) {
 			this.currentHp = 0;
 			onCharacterDeath();
-			
-		} else if (currentHp > maxHp) {
+			return;
+		} 
+		if (currentHp > maxHp) {
 			this.currentHp = maxHp;
-		} else
+		} else {	
 			this.currentHp = currentHp;
+		}
+		for(CharacterListener listener : listeners){
+			listener.onPropertyChanged(this, "currentHp" , oldValue, this.currentHp);
+		}	
 	}
 
 	public Point getLocation() {
@@ -90,6 +101,9 @@ public abstract class Character {
 			Game.heroes.remove(this);
 		}
 		Game.setCell(p.x, p.y, new CharacterCell(null));
+		for(CharacterListener listener : listeners){
+			listener.onCharacterDead(this);
+		}
 	}
 	public String getImage(){
 		return "C:\\Projects\\CSEN401\\TheLastOfUs\\images/" + name.toLowerCase().replace(" ", "") + ".png";
@@ -110,4 +124,11 @@ public abstract class Character {
          + "<br />Attack Damage: <span color='red'>" + getAttackDmg() + "</span>"
          + "</html>";
 	}
+	public void addCharacterListener(CharacterListener listener){
+		listeners.add(listener);
+	}
+	public void removeCharacterListener(CharacterListener listener){
+		listeners.remove(listener);
+	}
+
 }
