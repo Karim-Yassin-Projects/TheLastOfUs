@@ -218,6 +218,8 @@ public class Game {
 			return;
 		}
 		map[i][j] = newCell;
+		Point p = new Point(i, j);
+		newCell.setLocation(p);
 		for (GameListener gameListener : gameListeners) {
 			gameListener.onCellChanged(i, j, oldCell, newCell);
 		}
@@ -228,6 +230,15 @@ public class Game {
 		}
 		for(GameListener listener : gameListeners){
 			listener.onTargetChanged(oldCharacter, newCharacter);
+		}
+	}
+	public static void handleCellEvent(Cell cell){
+		if(cell.getLocation() == null){
+			return;
+		}
+		Point p = cell.getLocation();
+		for(GameListener listener : gameListeners){
+			listener.onCellEventChanged(p.x, p.y, cell);
 		}
 	}
 }

@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.characters.Character;
+import model.characters.CharacterListener;
 import model.characters.Hero;
 
 public class HeroStatsPanel extends JPanel {
@@ -41,5 +43,16 @@ public class HeroStatsPanel extends JPanel {
         healthBar = new HealthBar(hero.getCurrentHp(), hero.getMaxHp());
         add(healthBar, BorderLayout.NORTH);
 
+        hero.addCharacterListener(new CharacterListener() {
+            @Override
+            public void onChangedProperty(Character character, String propertyName, int oldValue, int newValue) {
+                if(propertyName.equals("currentHp")){
+                    healthBar.setCurrentHp(newValue);
+                }
+                else{
+                    statusLabel.setText(hero.getHtmlDescriptionInGame());
+                }
+            }
+        });
     }
 }

@@ -70,8 +70,13 @@ public class MapGrid extends JPanel {
                     updateCell(14 - loc.x, loc.y);
                 }
             }
+
+            @Override
+            public void onCellEventChanged(int i, int j, Cell cell) {
+                updateCell(14-i, j);
+            }
         });
-        
+
     }
 
     public void handleClick(int i, int j, boolean isRightbutton) {
@@ -86,7 +91,8 @@ public class MapGrid extends JPanel {
                     if (Game.getSelectedHero() == null) {
                         return;
                     } else {
-                        Game.getSelectedHero().setTarget(hero);;
+                        Game.getSelectedHero().setTarget(hero);
+                        ;
                     }
                 } else {
                     if (Game.getSelectedHero() == hero) {
@@ -127,10 +133,10 @@ public class MapGrid extends JPanel {
     private static void setButtonBorder(JButton button, boolean isselected, boolean isTarget) {
         Color color1;
         int width = isTarget || isselected ? 3 : 1;
-        
+
         if (isselected && isTarget) {
             color1 = new Color(128, 0, 255, 255);
-            
+
         } else if (isselected) {
             color1 = Color.BLUE;
         } else if (isTarget) {
@@ -160,7 +166,7 @@ public class MapGrid extends JPanel {
             }
         } else {
             button.setIcon(new ImageIcon());
-            setButtonBorder(button,false,false);
+            setButtonBorder(button, false, false);
         }
     }
 

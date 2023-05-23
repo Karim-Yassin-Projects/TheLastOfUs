@@ -14,11 +14,13 @@ public class Vaccine implements Collectible {
 	@Override
 	public void pickUp(Hero h) {
 		h.getVaccineInventory().add(this);
+		h.updateVaccineCount(h.getVaccineInventory().size()-1);
 	}
 
 	@Override
 	public void use(Hero h) {
 		h.getVaccineInventory().remove(this);
+		h.updateVaccineCount(h.getVaccineInventory().size()+1);
 		Point p = h.getTarget().getLocation();
 		Cell cell = Game.map[p.x][p.y];
 		Game.zombies.remove(h.getTarget());

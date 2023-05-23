@@ -36,10 +36,18 @@ public abstract class Hero extends Character {
 	}
 
 	public void setActionsAvailable(int actionsAvailable) {
+		if(this.actionsAvailable == actionsAvailable){
+			return;
+		}
+		int oldValue = this.actionsAvailable;
 		if (actionsAvailable <= 0)
 			this.actionsAvailable = 0;
-		else
+		else{
 			this.actionsAvailable = actionsAvailable;
+		}
+		for(CharacterListener listener : listeners){
+			listener.onChangedProperty(this, "actionsAvailable", oldValue, this.actionsAvailable);
+		}
 	}
 
 	public boolean isSpecialAction() {
@@ -91,7 +99,7 @@ public abstract class Hero extends Character {
 			this.setCurrentHp(this.getCurrentHp() - ((TrapCell) Game.map[tX][tY]).getTrapDamage());
 		}
 		Game.setCell(getLocation().x, getLocation().y, new CharacterCell(null));
-		this.actionsAvailable--;
+		this.setActionsAvailable(getActionsAvailable()-1);
 
 		if (this.getCurrentHp() ==  0) {
 			return;
@@ -114,7 +122,7 @@ public abstract class Hero extends Character {
 		super.attack();
 		if (this instanceof Fighter && (this.isSpecialAction()))
 			return;
-		actionsAvailable--;
+		this.setActionsAvailable(getActionsAvailable()-1);
 	}
 
 	public void useSpecial() throws NoAvailableResourcesException, InvalidTargetException {
@@ -148,7 +156,7 @@ public abstract class Hero extends Character {
 		if (!(this.getTarget() instanceof Zombie))
 			throw new InvalidTargetException("You can only cure zombies.");
 		this.vaccineInventory.get(0).use(this);
-		actionsAvailable--;
+		this.setActionsAvailable(getActionsAvailable()-1);;
 	}
 	public String getType(){
 		if(this instanceof Fighter){
@@ -178,9 +186,20 @@ public abstract class Hero extends Character {
             + getName()
 		+ "<br /Type: <span color = 'black'>" + getType()
          + "<br />Attack Damage: <span color='black'>" + getAttackDmg() + "</span>"
-		 + "<br />Actions Avaialable: <span color = 'black'>" + getActionsAvailable() + "</span>"
+		 + "<br />Actions Available: <span color = 'black'>" + getActionsAvailable() + "</span>"
 		 + "<br />Supplies: <span color = 'black'>" + getSupplyInventory().size() + "</span>"
 		 + "<br />Vaccines: <span color = 'black'>" + getVaccineInventory().size() + "</span>"
          + "</html>";
 	}
+	public void updateVaccineCount(int oldValue){
+		for(CharacterListener listener : listeners){
+			listener.onChangedProperty(this, "vaccineCount", oldValue, this.getVaccineInventory().size());
+		}
+	}
+	public void updateSupplyCount(int oldValue){
+		for(CharacterListener listener : listeners){
+			listener.onChangedProperty(this, "supplyCount", oldValue, this.getSupplyInventory().size());
+		}
+	}
+	
 }

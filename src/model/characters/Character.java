@@ -1,6 +1,7 @@
 package model.characters;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 import model.world.CharacterCell;
 import engine.Game;
@@ -15,6 +16,7 @@ public abstract class Character {
 	private Point location;
 	private int attackDmg;
 	private Character target;
+	protected ArrayList<CharacterListener> listeners = new ArrayList<>();
 
 	public Character(String name, int maxHp, int attackDamage) {
 		this.name = name;
@@ -28,14 +30,22 @@ public abstract class Character {
 	}
 
 	public void setCurrentHp(int currentHp) {
+		if(this.currentHp == currentHp){
+			return;
+		}
+		int oldValue = this.currentHp;
 		if (currentHp <= 0) {
 			this.currentHp = 0;
 			onCharacterDeath();
 			
 		} else if (currentHp > maxHp) {
 			this.currentHp = maxHp;
-		} else
+		} else{
 			this.currentHp = currentHp;
+		}
+		for(CharacterListener listener : listeners){
+			listener.onChangedProperty(this, "currentHp", oldValue, this.currentHp);
+		}
 	}
 
 	public Point getLocation() {
@@ -110,4 +120,11 @@ public abstract class Character {
          + "<br />Attack Damage: <span color='red'>" + getAttackDmg() + "</span>"
          + "</html>";
 	}
+	public void addCharacterListener(CharacterListener listener){
+		listeners.add(listener);
+	}
+	public void removeCharacterListener(CharacterListener listener){
+		listeners.remove(listener);
+	}
+
 }
