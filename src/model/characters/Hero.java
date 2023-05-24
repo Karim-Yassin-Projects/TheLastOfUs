@@ -47,8 +47,6 @@ public abstract class Hero extends Character {
 		for (CharacterListener listener : listeners) {
 			listener.onChangedProperty(this, "actionsAvailable", oldValue, this.actionsAvailable);
 		}
-		Game.handleGameOver();
-
 	}
 
 	public boolean isSpecialAction() {
@@ -104,6 +102,7 @@ public abstract class Hero extends Character {
 		this.setActionsAvailable(getActionsAvailable() - 1);
 
 		if (this.getCurrentHp() == 0) {
+			Game.handleGameOver();
 			return;
 		}
 		Game.setCell(tX, tY, new CharacterCell(this));
@@ -122,6 +121,9 @@ public abstract class Hero extends Character {
 		if (this.getTarget() instanceof Hero)
 			throw new InvalidTargetException("You can only attack zombies.");
 		super.attack();
+		if (Game.handleGameOver()) {
+			return;
+		}
 		if (this instanceof Fighter && (this.isSpecialAction()))
 			return;
 		this.setActionsAvailable(getActionsAvailable() - 1);
@@ -159,7 +161,7 @@ public abstract class Hero extends Character {
 			throw new InvalidTargetException("You can only cure zombies.");
 		this.vaccineInventory.get(0).use(this);
 		this.setActionsAvailable(getActionsAvailable() - 1);
-		;
+		Game.handleGameOver();
 	}
 
 	public String getType() {

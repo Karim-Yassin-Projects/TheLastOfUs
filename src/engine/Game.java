@@ -52,6 +52,9 @@ public class Game {
 		for (int i = 0; i < zombies.size(); i++) {
 			Zombie zombie = zombies.get(i);
 			zombie.attack();
+			if (handleGameOver()) {
+				return;
+			}
 			zombie.setTarget(null);
 			if (zombie.getCurrentHp() <= 0) {
 				i--;
@@ -67,7 +70,6 @@ public class Game {
 			hero.setSpecialAction(false);
 			adjustVisibility(hero);
 		}
-		handleGameOver();
 	}
 
 	public static void adjustVisibility(Hero h) {
@@ -279,25 +281,27 @@ public class Game {
 		}
 	}
 
-	public static void handleGameOver() {
+	public static boolean handleGameOver() {
 		if (!checkGameOver()) {
-			return;
+			return false;
 		}
 		for (GameListener listener : gameListeners) {
 			if (listener.onGameOver()) {
-				return;
+				return true;
 			}
 		}
+		return true;
 	}
 
 	public static void resetGame() {
-		while (!heroes.isEmpty()) {
-			Hero h = heroes.get(0);
-			heroes.remove(h);
-			availableHeroes.add(h);
-		}
-		gameListeners.clear();
-		zombies.clear();
+		// while (!heroes.isEmpty()) {
+		// 	Hero h = heroes.get(0);
+		// 	heroes.remove(h);
+		// 	availableHeroes.add(h);
+		// }
+		heroes = new ArrayList<>();
+		gameListeners = new ArrayList<>();
+		zombies = new ArrayList<>();
 		selectedHero = null;
 		Game.map = new Cell[15][15];
 	}

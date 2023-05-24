@@ -11,6 +11,7 @@ import model.characters.Hero;
 
 public class GameView extends JFrame {
     private GameMainView gameMainView;
+    private HeroSelection heroSelection;
 
     public GameView() throws IOException {
         super();
@@ -18,15 +19,13 @@ public class GameView extends JFrame {
         this.setSize(1280, 720);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("The Last of Us Legacy");
-        HeroSelection heroSelection = new HeroSelection();
+        heroSelection = new HeroSelection();
         heroSelection.addHeroSelectionListener(new HeroSelectionListener() {
             public void heroSelected(Hero h) throws IOException {
                 Game.startGame(h);
                 heroSelection.setVisible(false);
                 remove(heroSelection);
-
                 gameMainView = new GameMainView();
-
                 add(gameMainView);
             }
         });
@@ -42,10 +41,14 @@ public class GameView extends JFrame {
                     dispose();
                     return false;
                 } else {
-                    remove(gameOverPanel);
                     Game.resetGame();
-                    add(heroSelection);
-                    heroSelection.setVisible(true);
+                    setVisible(false);
+                    try {
+                        new GameView();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     return true;
                 }
             }
