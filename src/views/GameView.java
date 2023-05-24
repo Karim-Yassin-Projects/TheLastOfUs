@@ -3,8 +3,10 @@ package views;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import engine.Game;
+import engine.GameListener;
 import model.characters.Hero;
 
 public class GameView extends JFrame {
@@ -28,12 +30,32 @@ public class GameView extends JFrame {
                 add(gameMainView);
             }
         });
+        GameOverPanel gameOverPanel = new GameOverPanel();
+        Game.addGameListener(new GameListener() {
+            @Override
+            public void onGameOver() {
+                remove(gameMainView);
+                add(gameOverPanel);
+                int result = JOptionPane.showConfirmDialog(gameOverPanel, "Would you like to play again?", "Game Over Message",JOptionPane.YES_NO_OPTION);
+                if(result != JOptionPane.YES_OPTION){
+                    dispose();
+                }
+                else{
+                    remove(gameOverPanel);
+                    add(heroSelection);
+                    heroSelection.setVisible(true);
+                }
+            }
+        });
         this.add(heroSelection);
         
+        
         this.setVisible(true);
+        
+        
 
     }
-    GameView that = this;
+    
     // public void checkGameCondition () throws IOException {
     //     if(Game.checkGameOver()) {
     //             JOptionPane jOptionPane = new JOptionPane();

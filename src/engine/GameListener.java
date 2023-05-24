@@ -26,6 +26,9 @@ public abstract class GameListener {
     public void onTrapCell(Cell cell){
 
     }
+    public void onGameOver(){
+        
+    }
     
 
 }

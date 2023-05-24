@@ -48,6 +48,7 @@ public abstract class Hero extends Character {
 		for(CharacterListener listener : listeners){
 			listener.onChangedProperty(this, "actionsAvailable", oldValue, this.actionsAvailable);
 		}
+		Game.handleGameOver();
 		
 	}
 

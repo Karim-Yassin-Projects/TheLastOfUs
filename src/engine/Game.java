@@ -63,6 +63,7 @@ public class Game {
 			hero.setSpecialAction(false);
 			adjustVisibility(hero);
 		}
+		handleGameOver();
 	}
 
 	public static void adjustVisibility(Hero h) {
@@ -267,6 +268,14 @@ public class Game {
 		}
 		for(GameListener listener : gameListeners){
 			listener.onTrapCell(cell);
+		}
+	}
+	public static void handleGameOver(){
+		if(!checkGameOver()){
+			return;
+		}
+		for(GameListener listener : gameListeners){
+			listener.onGameOver();
 		}
 	}
 	
