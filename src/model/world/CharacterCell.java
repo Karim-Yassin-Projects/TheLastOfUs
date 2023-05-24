@@ -36,5 +36,4 @@ public class CharacterCell extends Cell {
 	public void setSafe(boolean isSafe) {
 		this.isSafe = isSafe;
 	}
-
 }

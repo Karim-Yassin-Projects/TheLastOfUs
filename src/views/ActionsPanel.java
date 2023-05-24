@@ -39,14 +39,7 @@ public class ActionsPanel extends JPanel {
                     String message = e1.getMessage();
                     JOptionPane.showMessageDialog(that, message, "Attack Error", JOptionPane.ERROR_MESSAGE, null);
                 }
-               if(Game.checkGameOver()) {
-                     if(Game.checkWin()) {
-                    JOptionPane.showMessageDialog(that, "YOU WIN!", "Victory Message", JOptionPane.YES_NO_OPTION);
-                     }
-                     else {
-                    JOptionPane.showMessageDialog(that,"YOU LOSE!", "Defeat Message", JOptionPane.OK_OPTION);
-                     };
-                }
+               
             }
             });
             
@@ -62,14 +55,7 @@ public class ActionsPanel extends JPanel {
                     String message = e1.getMessage();
                     JOptionPane.showMessageDialog(that, message, "Cure Error", JOptionPane.ERROR_MESSAGE, null);
                 }
-                if(Game.checkGameOver()) {
-                     if(Game.checkWin()) {
-                    JOptionPane.showMessageDialog(that, "YOU WIN!", "Victory Message", JOptionPane.YES_NO_OPTION);
-                     }
-                     else {
-                    JOptionPane.showMessageDialog(that,"YOU LOSE!", "Defeat Message", JOptionPane.YES_NO_OPTION);
-                     };
-                }
+                
             }
         });
 
@@ -86,14 +72,7 @@ public class ActionsPanel extends JPanel {
                     String message = e1.getMessage();
                     JOptionPane.showMessageDialog(that, message, "Special Action Error", JOptionPane.ERROR_MESSAGE, null);
                 }
-               if(Game.checkGameOver()) {
-                     if(Game.checkWin()) {
-                    JOptionPane.showMessageDialog(that, "YOU WIN!", "Victory Message", JOptionPane.YES_NO_OPTION);
-                     }
-                     else {
-                    JOptionPane.showMessageDialog(that,"YOU LOSE!", "Defeat Message", JOptionPane.YES_NO_OPTION);
-                     };
-                }
+               
             }
         });
 
@@ -109,14 +88,6 @@ public class ActionsPanel extends JPanel {
                 } catch (NotEnoughActionsException | InvalidTargetException e1) {
                     String message = e1.getMessage();
                     JOptionPane.showMessageDialog(that, message, "End Turn Error", JOptionPane.ERROR_MESSAGE, null);
-                }
-                if(Game.checkGameOver()) {
-                     if(Game.checkWin()) {
-                    JOptionPane.showMessageDialog(that, "YOU WIN!", "Victory Message", JOptionPane.YES_NO_OPTION);
-                     }
-                     else {
-                    JOptionPane.showMessageDialog(that,"YOU LOSE!", "Defeat Message", JOptionPane.YES_NO_OPTION);
-                     };
                 }
             }
         });
