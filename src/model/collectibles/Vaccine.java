@@ -29,7 +29,9 @@ public class Vaccine implements Collectible {
 		Game.addHero(tba);
 		((CharacterCell) cell).setCharacter(tba);
 		tba.setLocation(p);
+		Game.adjustVisibility(tba);
 	}
+	
 	@Override
 	public String getImage() {
 		return "images/vaccine.png";
