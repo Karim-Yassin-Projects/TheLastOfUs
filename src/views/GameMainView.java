@@ -35,6 +35,13 @@ public class GameMainView extends JPanel {
         add(mapGrid, BorderLayout.CENTER);
 
         setupKeyboardActions();
+        GameMainView that = this;
+        Game.addGameListener(new GameListener() {
+            @Override
+            public void onTrapCell(Cell cell) {
+                JOptionPane.showMessageDialog(that, "Warning! You just entered a trap cell.", "Trap Cell Message", JOptionPane.OK_OPTION);
+            }
+        });
     }
 
     private void setupKeyboardActions() {
@@ -74,16 +81,11 @@ public class GameMainView extends JPanel {
             }
             try {
                 Game.getSelectedHero().move(direction);
-                Game.addGameListener(new GameListener() {
-                    @Override
-                    public void onTrapCell(Cell cell) {
-                        JOptionPane.showMessageDialog(view, "Warning! You just entered a trap cell.", "Trap Cell Message", JOptionPane.OK_OPTION);
-                    }
-                });
+                
             } 
             catch (MovementException | NotEnoughActionsException me) {
                 String message = me.getMessage();
-                JOptionPane.showMessageDialog(view, message, "Movement Error", JOptionPane.ERROR_MESSAGE, null);
+                JOptionPane.showMessageDialog(view, message, "Movement Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
