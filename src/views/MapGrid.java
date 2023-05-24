@@ -7,9 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import engine.Game;
 import engine.GameListener;
@@ -27,7 +25,7 @@ public class MapGrid extends JPanel {
         this.setBackground(Color.GRAY);
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                JButton button = new JButton();
+                ScaledButton button = new ScaledButton();
                 int x = i;
                 int y = j;
                 button.addMouseListener(new MouseAdapter() {
@@ -115,7 +113,7 @@ public class MapGrid extends JPanel {
     }
 
     public void updateCell(int i, int j) {
-        JButton button = (JButton) getComponent(i * 15 + j);
+        ScaledButton button = (ScaledButton) getComponent(i * 15 + j);
         Cell cell = Game.map[14 - i][j];
         updateCellVisibility(button, cell);
         if (cell instanceof CollectibleCell) {
@@ -130,7 +128,7 @@ public class MapGrid extends JPanel {
         }
     }
 
-    private static void setButtonBorder(JButton button, boolean isselected, boolean isTarget) {
+    private static void setButtonBorder(ScaledButton button, boolean isselected, boolean isTarget) {
         Color color1;
         int width = isTarget || isselected ? 3 : 1;
 
@@ -147,11 +145,11 @@ public class MapGrid extends JPanel {
         button.setBorder(BorderFactory.createMatteBorder(width, width, width, width, color1));
     }
 
-    private static void updateCharacterCell(JButton button, CharacterCell charCell) {
+    private static void updateCharacterCell(ScaledButton button, CharacterCell charCell) {
         Character character = charCell.getCharacter();
         if (character != null) {
-            Icon icon = new ImageIcon(character.getImage());
-            button.setIcon(icon);
+            ImageIcon icon = new ImageIcon(character.getImage());
+            button.setImageIcon(icon);
             boolean isSelected = Game.getSelectedHero() == character;
             boolean isTarget = Game.getSelectedHero() != null && character == Game.getSelectedHero().getTarget();
 
@@ -165,17 +163,17 @@ public class MapGrid extends JPanel {
                 setButtonBorder(button, isSelected, isTarget);
             }
         } else {
-            button.setIcon(new ImageIcon());
+            button.setImageIcon(new ImageIcon());
             setButtonBorder(button, false, false);
         }
     }
 
-    private static void updateCollectibleCell(JButton button, CollectibleCell colCell) {
-        Icon icon = new ImageIcon(colCell.getCollectible().getImage());
-        button.setIcon(icon);
+    private static void updateCollectibleCell(ScaledButton button, CollectibleCell colCell) {
+        ImageIcon icon = new ImageIcon(colCell.getCollectible().getImage());
+        button.setImageIcon(icon);
     }
 
-    private static void updateCellVisibility(JButton button, Cell cell) {
+    private static void updateCellVisibility(ScaledButton button, Cell cell) {
         if (cell.isVisible()) {
             button.setBackground(Color.WHITE);
         } else {
