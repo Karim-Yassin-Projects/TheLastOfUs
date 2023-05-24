@@ -9,16 +9,17 @@ import javax.swing.JButton;
 public class ScaledButton extends JButton {
 
     private ImageIcon imageIcon;
+
     public ScaledButton() {
         this.addComponentListener(new ComponentAdapter() {
-            
+
             @Override
             public void componentResized(ComponentEvent e) {
                 setImageIcon(getImageIcon());
             }
         });
     }
-    
+
     public void setImageIcon(ImageIcon imageIcon) {
         this.imageIcon = imageIcon;
         setIcon(getResizedIcon(imageIcon));

@@ -21,6 +21,7 @@ public class ActionsPanel extends JPanel {
     private JButton cureButton;
     private JButton useSpecialButton;
     private JButton endTurnButton;
+
     public ActionsPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -32,17 +33,16 @@ public class ActionsPanel extends JPanel {
         attackButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                 try {
+                try {
                     Game.getSelectedHero().attack();
-                } 
-                catch (NotEnoughActionsException | InvalidTargetException e1) {
+                } catch (NotEnoughActionsException | InvalidTargetException e1) {
                     String message = e1.getMessage();
                     JOptionPane.showMessageDialog(that, message, "Attack Error", JOptionPane.ERROR_MESSAGE, null);
                 }
-               
+
             }
-            });
-            
+        });
+
         cureButton = new JButton();
         cureButton.setBackground(Color.WHITE);
         cureButton.setText("Cure");
@@ -55,14 +55,14 @@ public class ActionsPanel extends JPanel {
                     String message = e1.getMessage();
                     JOptionPane.showMessageDialog(that, message, "Cure Error", JOptionPane.ERROR_MESSAGE, null);
                 }
-                
+
             }
         });
 
         useSpecialButton = new JButton();
         useSpecialButton.setText("Use Special Action");
         useSpecialButton.setBackground(Color.WHITE);
-       
+
         useSpecialButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -70,12 +70,12 @@ public class ActionsPanel extends JPanel {
                     Game.getSelectedHero().useSpecial();
                 } catch (NoAvailableResourcesException | InvalidTargetException e1) {
                     String message = e1.getMessage();
-                    JOptionPane.showMessageDialog(that, message, "Special Action Error", JOptionPane.ERROR_MESSAGE, null);
+                    JOptionPane.showMessageDialog(that, message, "Special Action Error", JOptionPane.ERROR_MESSAGE,
+                            null);
                 }
-               
+
             }
         });
-
 
         endTurnButton = new JButton();
         endTurnButton.setText("End Turn");
@@ -104,11 +104,12 @@ public class ActionsPanel extends JPanel {
             }
         });
     }
-    public void enableOrDisableButtons(){
+
+    public void enableOrDisableButtons() {
         boolean heroIsSelected = Game.getSelectedHero() != null;
         attackButton.setEnabled(heroIsSelected);
         cureButton.setEnabled(heroIsSelected);
         useSpecialButton.setEnabled(heroIsSelected);
     }
-    
+
 }

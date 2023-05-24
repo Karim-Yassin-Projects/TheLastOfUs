@@ -13,6 +13,4 @@ public class CollectibleCell extends Cell {
 	public Collectible getCollectible() {
 		return collectible;
 	}
-	
-
 }

@@ -30,54 +30,29 @@ public class GameView extends JFrame {
                 add(gameMainView);
             }
         });
-        GameOverPanel gameOverPanel = new GameOverPanel();
         Game.addGameListener(new GameListener() {
             @Override
-            public void onGameOver() {
+            public boolean onGameOver() {
+                GameOverPanel gameOverPanel = new GameOverPanel();
                 remove(gameMainView);
                 add(gameOverPanel);
-                int result = JOptionPane.showConfirmDialog(gameOverPanel, "Would you like to play again?", "Game Over Message",JOptionPane.YES_NO_OPTION);
-                if(result != JOptionPane.YES_OPTION){
+                int result = JOptionPane.showConfirmDialog(gameOverPanel, "Would you like to play again?",
+                        "Game Over Message", JOptionPane.YES_NO_OPTION);
+                if (result != JOptionPane.YES_OPTION) {
                     dispose();
-                }
-                else{
+                    return false;
+                } else {
                     remove(gameOverPanel);
+                    Game.resetGame();
                     add(heroSelection);
                     heroSelection.setVisible(true);
+                    return true;
                 }
             }
         });
         this.add(heroSelection);
-        
-        
         this.setVisible(true);
-        
-        
-
     }
-    
-    // public void checkGameCondition () throws IOException {
-    //     if(Game.checkGameOver()) {
-    //             JOptionPane jOptionPane = new JOptionPane();
-    //                  if(Game.checkWin()) {
-    //                 jOptionPane.showMessageDialog(this,"YOU WIN! Would you like to play again?", "Victory Message", JOptionPane.YES_NO_OPTION);
-                        
-    //                  }
-    //                  else {
-    //                 jOptionPane.showMessageDialog(this,"YOU LOSE! Would you like to play again?", "Defeat Message", JOptionPane.YES_NO_OPTION);
-    //                  }
-    //                 if(jOptionPane.getMessageType() == JOptionPane.YES_OPTION){
-    //                     this.remove(gameMainView);
-    //                     this.add(new HeroSelection());
-    //                     this.setVisible(true);
-    //                 }
-    //                 else{
-    //                     this.dispose();
-    //                 }
-    //             }
-    // }
-
-    
 
     public static void main(String[] args) throws IOException {
         new GameView();

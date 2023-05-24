@@ -9,7 +9,6 @@ import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
 
 public abstract class Character {
-
 	private String name;
 	private int maxHp;
 	private int currentHp;
@@ -30,20 +29,20 @@ public abstract class Character {
 	}
 
 	public void setCurrentHp(int currentHp) {
-		if(this.currentHp == currentHp){
+		if (this.currentHp == currentHp) {
 			return;
 		}
 		int oldValue = this.currentHp;
 		if (currentHp <= 0) {
 			this.currentHp = 0;
 			onCharacterDeath();
-			
+
 		} else if (currentHp > maxHp) {
 			this.currentHp = maxHp;
-		} else{
+		} else {
 			this.currentHp = currentHp;
 		}
-		for(CharacterListener listener : listeners){
+		for (CharacterListener listener : listeners) {
 			listener.onChangedProperty(this, "currentHp", oldValue, this.currentHp);
 		}
 	}
@@ -92,39 +91,46 @@ public abstract class Character {
 
 	public void onCharacterDeath() {
 		Point p = this.getLocation();
-		
+
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Game.spawnNewZombie();
 		} else if (this instanceof Hero) {
-			Game.removeHero((Hero)this);
+			Game.removeHero((Hero) this);
 		}
 		Game.setCell(p.x, p.y, new CharacterCell(null));
 	}
-	public String getImage(){
+
+	public String getImage() {
 		return "C:\\Projects\\CSEN401\\TheLastOfUs\\images/" + name.toLowerCase().replace(" ", "") + ".png";
 	}
-	public String getType(String s){
-		switch(s){
-			case "FIGH": return "Fighter";
-			case "MED": return "Medic";
-			case "EXP": return "Explorer";
-			default: return "?";
+
+	public String getType(String s) {
+		switch (s) {
+			case "FIGH":
+				return "Fighter";
+			case "MED":
+				return "Medic";
+			case "EXP":
+				return "Explorer";
+			default:
+				return "?";
 		}
 	}
-	public String getHtmlDescription(){
-		return
-            "<html>"
-            + getName()
-         + "<br/>Maximum Health: <span color='green'>" + getMaxHp() + "</span>"
-         + "<br />Attack Damage: <span color='red'>" + getAttackDmg() + "</span>"
-         + "</html>";
-	}
-	public void addCharacterListener(CharacterListener listener){
-		listeners.add(listener);
-	}
-	public void removeCharacterListener(CharacterListener listener){
-		listeners.remove(listener);
+
+	public String getHtmlDescription() {
+		return "<html>"
+				+ getName()
+				+ "<br/>Maximum Health: <span color='green'>" + getMaxHp() + "</span>"
+				+ "<br />Attack Damage: <span color='red'>" + getAttackDmg() + "</span>"
+				+ "</html>";
 	}
 
+	public void addCharacterListener(CharacterListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeCharacterListener(CharacterListener listener) {
+		listeners.remove(listener);
+	}
 }

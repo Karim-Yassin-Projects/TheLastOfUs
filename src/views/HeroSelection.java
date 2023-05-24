@@ -35,10 +35,12 @@ public class HeroSelection extends JPanel {
                         e1.printStackTrace();
                     }
                 }
+
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
                 }
+
                 @Override
                 public void mouseExited(MouseEvent e) {
                     button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));

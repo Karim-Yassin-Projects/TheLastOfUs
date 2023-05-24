@@ -18,15 +18,17 @@ public abstract class Cell {
 	}
 
 	public void setVisible(boolean isVisible) {
-		if(this.isVisible == isVisible){
+		if (this.isVisible == isVisible) {
 			return;
 		}
 		this.isVisible = isVisible;
 		Game.handleCellEvent(this);
 	}
+
 	public Point getLocation() {
 		return location;
 	}
+
 	public void setLocation(Point location) {
 		this.location = location;
 	}

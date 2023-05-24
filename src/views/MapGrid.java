@@ -19,6 +19,8 @@ import model.world.CharacterCell;
 import model.world.CollectibleCell;
 
 public class MapGrid extends JPanel {
+    private static boolean enableCheat = true;
+
     public MapGrid() {
         super();
         this.setLayout(new GridLayout(15, 15));
@@ -71,7 +73,7 @@ public class MapGrid extends JPanel {
 
             @Override
             public void onCellEventChanged(int i, int j, Cell cell) {
-                updateCell(14-i, j);
+                updateCell(14 - i, j);
             }
         });
 
@@ -147,7 +149,7 @@ public class MapGrid extends JPanel {
 
     private static void updateCharacterCell(ScaledButton button, CharacterCell charCell) {
         Character character = charCell.getCharacter();
-        if(!charCell.isVisible()){
+        if (!charCell.isVisible() && !enableCheat) {
             return;
         }
         if (character != null) {
@@ -173,10 +175,9 @@ public class MapGrid extends JPanel {
 
     private static void updateCollectibleCell(ScaledButton button, CollectibleCell colCell) {
         ImageIcon icon;
-        if(colCell.isVisible()){
+        if (colCell.isVisible() || enableCheat) {
             icon = new ImageIcon(colCell.getCollectible().getImage());
-        }
-        else{
+        } else {
             icon = new ImageIcon();
         }
         button.setImageIcon(icon);
@@ -185,15 +186,15 @@ public class MapGrid extends JPanel {
     private static void updateCellVisibility(ScaledButton button, Cell cell) {
         if (cell.isVisible()) {
             button.setBackground(Color.WHITE);
-            if(cell instanceof CharacterCell){
-                CharacterCell charCell = (CharacterCell)cell;
-                if(charCell.getCharacter() != null){
+            if (cell instanceof CharacterCell) {
+                CharacterCell charCell = (CharacterCell) cell;
+                if (charCell.getCharacter() != null) {
                     button.setIcon(new ImageIcon(charCell.getCharacter().getImage()));
                     return;
                 }
             }
-            if(cell instanceof CollectibleCell){
-                CollectibleCell colCell = (CollectibleCell)cell;
+            if (cell instanceof CollectibleCell) {
+                CollectibleCell colCell = (CollectibleCell) cell;
                 button.setIcon(new ImageIcon(colCell.getCollectible().getImage()));
             }
 

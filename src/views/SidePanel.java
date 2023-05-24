@@ -17,7 +17,7 @@ public class SidePanel extends JPanel {
         setBackground(Color.BLACK);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setVisible(true);
-        for(Hero hero : Game.heroes){
+        for (Hero hero : Game.heroes) {
             heroStatsPanel = new HeroStatsPanel(hero);
             add(heroStatsPanel);
         }
@@ -27,19 +27,20 @@ public class SidePanel extends JPanel {
                 Game.addHero(hero);
                 add(new HeroStatsPanel(hero));
             }
+
             @Override
             public void onHeroRemoved(Hero hero) {
                 Game.removeHero(hero);
-                for(Component component : getComponents()){
-                    if(component instanceof HeroStatsPanel){
-                        HeroStatsPanel heroStatsPanel= (HeroStatsPanel)component;
-                        if(heroStatsPanel.getHero() == hero){
+                for (Component component : getComponents()) {
+                    if (component instanceof HeroStatsPanel) {
+                        HeroStatsPanel heroStatsPanel = (HeroStatsPanel) component;
+                        if (heroStatsPanel.getHero() == hero) {
                             remove(component);
                         }
                     }
                 }
             }
         });
-        
+
     }
 }

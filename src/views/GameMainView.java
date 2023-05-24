@@ -17,6 +17,7 @@ import exceptions.MovementException;
 import exceptions.NotEnoughActionsException;
 import model.characters.Direction;
 import model.world.Cell;
+
 public class GameMainView extends JPanel {
     private SidePanel sidePanel;
     private ActionsPanel actionsPanel;
@@ -39,7 +40,8 @@ public class GameMainView extends JPanel {
         Game.addGameListener(new GameListener() {
             @Override
             public void onTrapCell(Cell cell) {
-                JOptionPane.showMessageDialog(that, "Warning! You just entered a trap cell.", "Trap Cell Message", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(that, "Warning! You just entered a trap cell.", "Trap Cell Message",
+                        JOptionPane.OK_OPTION);
             }
         });
     }
@@ -48,7 +50,7 @@ public class GameMainView extends JPanel {
         ActionMap actionMap = getActionMap();
         int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
         InputMap inputMap = getInputMap(condition);
-        
+
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true), "up");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "up");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "down");
@@ -57,7 +59,7 @@ public class GameMainView extends JPanel {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "left");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "right");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "right");
-        
+
         actionMap.put("up", new MoveAction(this, Direction.UP));
         actionMap.put("down", new MoveAction(this, Direction.DOWN));
         actionMap.put("left", new MoveAction(this, Direction.LEFT));
@@ -81,9 +83,8 @@ public class GameMainView extends JPanel {
             }
             try {
                 Game.getSelectedHero().move(direction);
-                
-            } 
-            catch (MovementException | NotEnoughActionsException me) {
+
+            } catch (MovementException | NotEnoughActionsException me) {
                 String message = me.getMessage();
                 JOptionPane.showMessageDialog(view, message, "Movement Error", JOptionPane.ERROR_MESSAGE);
             }

@@ -20,6 +20,7 @@ public class HeroStatsPanel extends JPanel {
     private HealthBar healthBar;
     private JLabel statusLabel;
     private Hero hero;
+
     public HeroStatsPanel(Hero hero) {
         super();
         this.setLayout(new BorderLayout());
@@ -31,7 +32,7 @@ public class HeroStatsPanel extends JPanel {
         try {
             BufferedImage image = ImageIO.read(new File(hero.getImage()));
             label = new JLabel(new ImageIcon(image));
-            
+
         } catch (IOException e) {
             label = new JLabel(hero.getName());
         }
@@ -47,18 +48,19 @@ public class HeroStatsPanel extends JPanel {
         hero.addCharacterListener(new CharacterListener() {
             @Override
             public void onChangedProperty(Character character, String propertyName, int oldValue, int newValue) {
-                if(propertyName.equals("currentHp")){
+                if (propertyName.equals("currentHp")) {
                     healthBar.setCurrentHp(newValue);
-                }
-                else{
+                } else {
                     statusLabel.setText(hero.getHtmlDescriptionInGame());
                 }
             }
         });
     }
+
     public Hero getHero() {
         return hero;
     }
+
     public void setHero(Hero hero) {
         this.hero = hero;
     }

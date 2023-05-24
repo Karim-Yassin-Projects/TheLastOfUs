@@ -49,9 +49,13 @@ public class Game {
 	}
 
 	public static void endTurn() throws NotEnoughActionsException, InvalidTargetException {
-		for (Zombie zombie : zombies) {
+		for (int i = 0; i < zombies.size(); i++) {
+			Zombie zombie = zombies.get(i);
 			zombie.attack();
 			zombie.setTarget(null);
+			if (zombie.getCurrentHp() <= 0) {
+				i--;
+			}
 		}
 		spawnNewZombie();
 		for (int i = 0; i < map.length; i++)
@@ -146,7 +150,6 @@ public class Game {
 		}
 		spawnTraps();
 		adjustVisibility(h);
-
 	}
 
 	public static void spawnCollectibles() {
@@ -217,7 +220,7 @@ public class Game {
 			return;
 		}
 		map[i][j] = newCell;
-		
+
 		Point p = new Point(i, j);
 		newCell.setLocation(p);
 		if (oldCell != null && oldCell.isVisible()) {
@@ -227,56 +230,75 @@ public class Game {
 			gameListener.onCellChanged(i, j, oldCell, newCell);
 		}
 	}
-	public static void onTargetChanged(Character oldCharacter, Character newCharacter){
-		if(oldCharacter == newCharacter){
+
+	public static void onTargetChanged(Character oldCharacter, Character newCharacter) {
+		if (oldCharacter == newCharacter) {
 			return;
 		}
-		for(GameListener listener : gameListeners){
+		for (GameListener listener : gameListeners) {
 			listener.onTargetChanged(oldCharacter, newCharacter);
 		}
 	}
-	public static void handleCellEvent(Cell cell){
-		if(cell.getLocation() == null){
+
+	public static void handleCellEvent(Cell cell) {
+		if (cell.getLocation() == null) {
 			return;
 		}
 		Point p = cell.getLocation();
-		for(GameListener listener : gameListeners){
+		for (GameListener listener : gameListeners) {
 			listener.onCellEventChanged(p.x, p.y, cell);
 		}
 	}
-	public static void addHero(Hero h){
-		if(heroes.contains(h)){
+
+	public static void addHero(Hero h) {
+		if (heroes.contains(h)) {
 			return;
 		}
 		heroes.add(h);
-		for(GameListener listener : gameListeners){
+		for (GameListener listener : gameListeners) {
 			listener.onHeroAdded(h);
 		}
 	}
-	public static void removeHero(Hero h){
-		if(!heroes.contains(h)){
+
+	public static void removeHero(Hero h) {
+		if (!heroes.contains(h)) {
 			return;
 		}
 		heroes.remove(h);
-		for(GameListener listener : gameListeners){
+		for (GameListener listener : gameListeners) {
 			listener.onHeroRemoved(h);
 		}
 	}
-	public static void handleTrapCells(Cell cell){
-		if(!(cell instanceof TrapCell)){
+
+	public static void handleTrapCells(Cell cell) {
+		if (!(cell instanceof TrapCell)) {
 			return;
 		}
-		for(GameListener listener : gameListeners){
+		for (GameListener listener : gameListeners) {
 			listener.onTrapCell(cell);
 		}
 	}
-	public static void handleGameOver(){
-		if(!checkGameOver()){
+
+	public static void handleGameOver() {
+		if (!checkGameOver()) {
 			return;
 		}
-		for(GameListener listener : gameListeners){
-			listener.onGameOver();
+		for (GameListener listener : gameListeners) {
+			if (listener.onGameOver()) {
+				return;
+			}
 		}
 	}
-	
+
+	public static void resetGame() {
+		while (!heroes.isEmpty()) {
+			Hero h = heroes.get(0);
+			heroes.remove(h);
+			availableHeroes.add(h);
+		}
+		gameListeners.clear();
+		zombies.clear();
+		selectedHero = null;
+		Game.map = new Cell[15][15];
+	}
 }

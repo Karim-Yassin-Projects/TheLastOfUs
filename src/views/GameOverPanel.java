@@ -8,16 +8,15 @@ import javax.swing.JPanel;
 
 import engine.Game;
 
-
-
-public class GameOverPanel extends JPanel{
+public class GameOverPanel extends JPanel {
     private JLabel label;
+
     public GameOverPanel() {
         super();
         this.setLayout(new BorderLayout());
         label = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(Game.checkWin() ? "images/victory.png":"images/defeat.png");
-        
+        ImageIcon imageIcon = new ImageIcon(Game.checkWin() ? "images/victory.png" : "images/defeat.png");
+
         label.setIcon(imageIcon);
         this.add(label, BorderLayout.CENTER);
     }

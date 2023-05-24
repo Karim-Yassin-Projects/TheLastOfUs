@@ -1,6 +1,5 @@
 package model.characters;
 
-
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -36,20 +35,20 @@ public abstract class Hero extends Character {
 	}
 
 	public void setActionsAvailable(int actionsAvailable) {
-		if(this.actionsAvailable == actionsAvailable){
+		if (this.actionsAvailable == actionsAvailable) {
 			return;
 		}
 		int oldValue = this.actionsAvailable;
 		if (actionsAvailable <= 0)
 			this.actionsAvailable = 0;
-		else{
+		else {
 			this.actionsAvailable = actionsAvailable;
 		}
-		for(CharacterListener listener : listeners){
+		for (CharacterListener listener : listeners) {
 			listener.onChangedProperty(this, "actionsAvailable", oldValue, this.actionsAvailable);
 		}
 		Game.handleGameOver();
-		
+
 	}
 
 	public boolean isSpecialAction() {
@@ -78,18 +77,18 @@ public abstract class Hero extends Character {
 		int tX = getLocation().x;
 		int tY = getLocation().y;
 		switch (d) {
-		case DOWN:
-			tX--;
-			break;
-		case LEFT:
-			tY--;
-			break;
-		case RIGHT:
-			tY++;
-			break;
-		case UP:
-			tX++;
-			break;
+			case DOWN:
+				tX--;
+				break;
+			case LEFT:
+				tY--;
+				break;
+			case RIGHT:
+				tY++;
+				break;
+			case UP:
+				tX++;
+				break;
 		}
 		if (tX < 0 || tY < 0 || tX > Game.map.length - 1 || tY > Game.map.length - 1)
 			throw new MovementException("You cannot move outside the borders of the map.");
@@ -102,9 +101,9 @@ public abstract class Hero extends Character {
 			Game.handleTrapCells(Game.map[tX][tY]);
 		}
 		Game.setCell(getLocation().x, getLocation().y, new CharacterCell(null));
-		this.setActionsAvailable(getActionsAvailable()-1);
+		this.setActionsAvailable(getActionsAvailable() - 1);
 
-		if (this.getCurrentHp() ==  0) {
+		if (this.getCurrentHp() == 0) {
 			return;
 		}
 		Game.setCell(tX, tY, new CharacterCell(this));
@@ -125,7 +124,7 @@ public abstract class Hero extends Character {
 		super.attack();
 		if (this instanceof Fighter && (this.isSpecialAction()))
 			return;
-		this.setActionsAvailable(getActionsAvailable()-1);
+		this.setActionsAvailable(getActionsAvailable() - 1);
 	}
 
 	public void useSpecial() throws NoAvailableResourcesException, InvalidTargetException {
@@ -159,50 +158,63 @@ public abstract class Hero extends Character {
 		if (!(this.getTarget() instanceof Zombie))
 			throw new InvalidTargetException("You can only cure zombies.");
 		this.vaccineInventory.get(0).use(this);
-		this.setActionsAvailable(getActionsAvailable()-1);;
+		this.setActionsAvailable(getActionsAvailable() - 1);
+		;
 	}
-	public String getType(){
-		if(this instanceof Fighter){
+
+	public String getType() {
+		if (this instanceof Fighter) {
 			return "Fighter";
 		}
-		if(this instanceof Medic){
+		if (this instanceof Medic) {
 			return "Medic";
 		}
-		if(this instanceof Explorer){
+		if (this instanceof Explorer) {
 			return "Explorer";
 		}
 		return "";
 	}
-	public String getHtmlDescription(){
-		return
-            "<html>"
-            + getName()
-		+ "<br /Type: <span color = 'grey'>" + getType()
-         + "<br />Maximum Health: <span color='green'>" + getMaxHp() + "</span>"
-         + "<br />Attack Damage: <span color='red'>" + getAttackDmg() + "</span>"
-		 + "<br /Max Actions: <span color = 'black'>" + getMaxActions() + "</span>"
-         + "</html>";
+
+	public String getHtmlDescription() {
+		return "<html>"
+				+ getName()
+				+ "<br /Type: <span color = 'grey'>" + getType()
+				+ "<br />Maximum Health: <span color='green'>" + getMaxHp() + "</span>"
+				+ "<br />Attack Damage: <span color='red'>" + getAttackDmg() + "</span>"
+				+ "<br /Max Actions: <span color = 'black'>" + getMaxActions() + "</span>"
+				+ "</html>";
 	}
-	public String getHtmlDescriptionInGame(){
-		return
-            "<html>"
-            + getName()
-		+ "<br /Type: <span color = 'black'>" + getType()
-         + "<br />Attack Damage: <span color='black'>" + getAttackDmg() + "</span>"
-		 + "<br />Actions Available: <span color = 'black'>" + getActionsAvailable() + "</span>"
-		 + "<br />Supplies: <span color = 'black'>" + getSupplyInventory().size() + "</span>"
-		 + "<br />Vaccines: <span color = 'black'>" + getVaccineInventory().size() + "</span>"
-         + "</html>";
+
+	public String getHtmlDescriptionInGame() {
+		return "<html>"
+				+ getName()
+				+ "<br /Type: <span color = 'black'>" + getType()
+				+ "<br />Attack Damage: <span color='black'>" + getAttackDmg() + "</span>"
+				+ "<br />Actions Available: <span color = 'black'>" + getActionsAvailable() + "</span>"
+				+ "<br />Supplies: <span color = 'black'>" + getSupplyInventory().size() + "</span>"
+				+ "<br />Vaccines: <span color = 'black'>" + getVaccineInventory().size() + "</span>"
+				+ "</html>";
 	}
-	public void updateVaccineCount(int oldValue){
-		for(CharacterListener listener : listeners){
+
+	public void updateVaccineCount(int oldValue) {
+		for (CharacterListener listener : listeners) {
 			listener.onChangedProperty(this, "vaccineCount", oldValue, this.getVaccineInventory().size());
 		}
 	}
-	public void updateSupplyCount(int oldValue){
-		for(CharacterListener listener : listeners){
+
+	public void updateSupplyCount(int oldValue) {
+		for (CharacterListener listener : listeners) {
 			listener.onChangedProperty(this, "supplyCount", oldValue, this.getSupplyInventory().size());
 		}
 	}
-	
+
+	public void resetHero() {
+		setCurrentHp(getMaxHp());
+		setActionsAvailable(getMaxActions());
+		setLocation(null);
+		setSpecialAction(false);
+		getSupplyInventory().clear();
+		getVaccineInventory().clear();
+		listeners.clear();
+	}
 }
