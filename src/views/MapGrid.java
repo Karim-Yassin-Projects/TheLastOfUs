@@ -147,6 +147,9 @@ public class MapGrid extends JPanel {
 
     private static void updateCharacterCell(ScaledButton button, CharacterCell charCell) {
         Character character = charCell.getCharacter();
+        if(!charCell.isVisible()){
+            return;
+        }
         if (character != null) {
             ImageIcon icon = new ImageIcon(character.getImage());
             button.setImageIcon(icon);
@@ -169,15 +172,34 @@ public class MapGrid extends JPanel {
     }
 
     private static void updateCollectibleCell(ScaledButton button, CollectibleCell colCell) {
-        ImageIcon icon = new ImageIcon(colCell.getCollectible().getImage());
+        ImageIcon icon;
+        if(colCell.isVisible()){
+            icon = new ImageIcon(colCell.getCollectible().getImage());
+        }
+        else{
+            icon = new ImageIcon();
+        }
         button.setImageIcon(icon);
     }
 
     private static void updateCellVisibility(ScaledButton button, Cell cell) {
         if (cell.isVisible()) {
             button.setBackground(Color.WHITE);
+            if(cell instanceof CharacterCell){
+                CharacterCell charCell = (CharacterCell)cell;
+                if(charCell.getCharacter() != null){
+                    button.setIcon(new ImageIcon(charCell.getCharacter().getImage()));
+                    return;
+                }
+            }
+            if(cell instanceof CollectibleCell){
+                CollectibleCell colCell = (CollectibleCell)cell;
+                button.setIcon(new ImageIcon(colCell.getCollectible().getImage()));
+            }
+
         } else {
             button.setBackground(Color.DARK_GRAY);
+            button.setIcon(new ImageIcon());
         }
     }
 }

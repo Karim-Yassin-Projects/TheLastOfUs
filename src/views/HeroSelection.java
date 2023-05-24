@@ -20,8 +20,11 @@ public class HeroSelection extends JPanel {
         for (Hero h : Game.availableHeroes) {
             Icon icon = new ImageIcon(h.getImage(), h.getName());
             JButton button = new JButton(h.getHtmlDescription(), icon);
+            button.setBackground(Color.LIGHT_GRAY);
             button.setPreferredSize(new Dimension(400, 60));
             button.setMaximumSize(button.getPreferredSize());
+            button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+
             this.add(button);
             button.addMouseListener(new MouseAdapter() {
                 @Override
@@ -31,6 +34,14 @@ public class HeroSelection extends JPanel {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
+                }
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
                 }
             });
         }

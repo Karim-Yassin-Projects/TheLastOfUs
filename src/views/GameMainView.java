@@ -11,11 +11,12 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-
 import engine.Game;
+import engine.GameListener;
 import exceptions.MovementException;
 import exceptions.NotEnoughActionsException;
 import model.characters.Direction;
+import model.world.Cell;
 public class GameMainView extends JPanel {
     private SidePanel sidePanel;
     private ActionsPanel actionsPanel;
@@ -73,7 +74,14 @@ public class GameMainView extends JPanel {
             }
             try {
                 Game.getSelectedHero().move(direction);
-            } catch (MovementException | NotEnoughActionsException me) {
+                Game.addGameListener(new GameListener() {
+                    @Override
+                    public void onTrapCell(Cell cell) {
+                        JOptionPane.showMessageDialog(view, "Warning! You just entered a trap cell.", "Trap Cell Message", JOptionPane.OK_OPTION);
+                    }
+                });
+            } 
+            catch (MovementException | NotEnoughActionsException me) {
                 String message = me.getMessage();
                 JOptionPane.showMessageDialog(view, message, "Movement Error", JOptionPane.ERROR_MESSAGE, null);
             }

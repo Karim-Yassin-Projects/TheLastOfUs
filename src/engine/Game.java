@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import model.characters.Character;
 import model.characters.Explorer;
 import model.characters.Fighter;
@@ -18,7 +17,6 @@ import model.world.Cell;
 import model.world.CharacterCell;
 import model.world.CollectibleCell;
 import model.world.TrapCell;
-
 import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
 
@@ -218,6 +216,7 @@ public class Game {
 			return;
 		}
 		map[i][j] = newCell;
+		
 		Point p = new Point(i, j);
 		newCell.setLocation(p);
 		if (oldCell != null && oldCell.isVisible()) {
@@ -262,4 +261,13 @@ public class Game {
 			listener.onHeroRemoved(h);
 		}
 	}
+	public static void handleTrapCells(Cell cell){
+		if(!(cell instanceof TrapCell)){
+			return;
+		}
+		for(GameListener listener : gameListeners){
+			listener.onTrapCell(cell);
+		}
+	}
+	
 }

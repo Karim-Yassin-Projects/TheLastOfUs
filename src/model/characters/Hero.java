@@ -48,6 +48,7 @@ public abstract class Hero extends Character {
 		for(CharacterListener listener : listeners){
 			listener.onChangedProperty(this, "actionsAvailable", oldValue, this.actionsAvailable);
 		}
+		
 	}
 
 	public boolean isSpecialAction() {
@@ -97,6 +98,7 @@ public abstract class Hero extends Character {
 			((CollectibleCell) Game.map[tX][tY]).getCollectible().pickUp(this);
 		} else if (Game.map[tX][tY] instanceof TrapCell) {
 			this.setCurrentHp(this.getCurrentHp() - ((TrapCell) Game.map[tX][tY]).getTrapDamage());
+			Game.handleTrapCells(Game.map[tX][tY]);
 		}
 		Game.setCell(getLocation().x, getLocation().y, new CharacterCell(null));
 		this.setActionsAvailable(getActionsAvailable()-1);

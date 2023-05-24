@@ -5,19 +5,20 @@ import java.awt.Component;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-
 import engine.Game;
 import engine.GameListener;
 import model.characters.Hero;
 
 public class SidePanel extends JPanel {
+    private HeroStatsPanel heroStatsPanel;
+
     public SidePanel() {
         super();
         setBackground(Color.BLACK);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setVisible(true);
         for(Hero hero : Game.heroes){
-            HeroStatsPanel heroStatsPanel = new HeroStatsPanel(hero);
+            heroStatsPanel = new HeroStatsPanel(hero);
             add(heroStatsPanel);
         }
         Game.addGameListener(new GameListener() {
@@ -39,5 +40,6 @@ public class SidePanel extends JPanel {
                 }
             }
         });
+        
     }
 }

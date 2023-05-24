@@ -3,6 +3,7 @@ package views;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+
 import engine.Game;
 import model.characters.Hero;
 
@@ -32,6 +33,27 @@ public class GameView extends JFrame {
         this.setVisible(true);
 
     }
+    GameView that = this;
+    // public void checkGameCondition () throws IOException {
+    //     if(Game.checkGameOver()) {
+    //             JOptionPane jOptionPane = new JOptionPane();
+    //                  if(Game.checkWin()) {
+    //                 jOptionPane.showMessageDialog(this,"YOU WIN! Would you like to play again?", "Victory Message", JOptionPane.YES_NO_OPTION);
+                        
+    //                  }
+    //                  else {
+    //                 jOptionPane.showMessageDialog(this,"YOU LOSE! Would you like to play again?", "Defeat Message", JOptionPane.YES_NO_OPTION);
+    //                  }
+    //                 if(jOptionPane.getMessageType() == JOptionPane.YES_OPTION){
+    //                     this.remove(gameMainView);
+    //                     this.add(new HeroSelection());
+    //                     this.setVisible(true);
+    //                 }
+    //                 else{
+    //                     this.dispose();
+    //                 }
+    //             }
+    // }
 
     
 

@@ -21,6 +21,11 @@ public abstract class GameListener {
 
     }
     public void onHeroRemoved(Hero hero){
-        
+
     }
+    public void onTrapCell(Cell cell){
+
+    }
+    
+
 }
