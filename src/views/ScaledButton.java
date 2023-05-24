@@ -29,6 +29,9 @@ public class ScaledButton extends JButton {
     }
 
     ImageIcon getResizedIcon(ImageIcon icon) {
+        if (icon == null) {
+            return null;
+        }
         Image img = icon.getImage();
         int imageWidth = icon.getIconWidth();
         int imageHeight = icon.getIconHeight();
