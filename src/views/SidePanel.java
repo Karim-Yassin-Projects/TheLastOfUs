@@ -3,7 +3,6 @@ package views;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.ScrollPane;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
