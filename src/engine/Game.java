@@ -74,6 +74,9 @@ public class Game {
 
 	public static void adjustVisibility(Hero h) {
 		Point p = h.getLocation();
+		if (p == null) {
+			return;
+		}
 		for (int i = -1; i <= 1; i++) {
 			int cx = p.x + i;
 			if (cx >= 0 && cx <= 14) {
@@ -81,7 +84,9 @@ public class Game {
 					int cy = p.y + j;
 					if (cy >= 0 && cy <= 14) {
 						if (cy >= 0 && cy <= map.length - 1) {
-							map[cx][cy].setVisible(true);
+							if (map[cx][cy] != null) {
+								map[cx][cy].setVisible(true);
+							}
 						}
 					}
 				}
@@ -290,14 +295,14 @@ public class Game {
 				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	public static void resetGame() {
 		// while (!heroes.isEmpty()) {
-		// 	Hero h = heroes.get(0);
-		// 	heroes.remove(h);
-		// 	availableHeroes.add(h);
+		// Hero h = heroes.get(0);
+		// heroes.remove(h);
+		// availableHeroes.add(h);
 		// }
 		heroes = new ArrayList<>();
 		gameListeners = new ArrayList<>();

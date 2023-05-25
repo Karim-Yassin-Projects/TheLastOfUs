@@ -43,14 +43,14 @@ public class GameOverPanel extends JPanel {
         if (width == 0 || height == 0) {
             return;
         }
-        
+
         int newWidth;
         int newHeight;
 
         if (width * imageHeight > height * imageWidth) {
             newWidth = width;
             newHeight = imageHeight * width / imageWidth;
-            
+
         } else {
             newHeight = height;
             newWidth = imageWidth * height / imageHeight;

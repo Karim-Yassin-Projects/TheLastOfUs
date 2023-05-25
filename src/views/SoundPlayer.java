@@ -71,10 +71,10 @@ public class SoundPlayer implements LineListener {
             clip.removeLineListener(this);
             clip = null;
         }
-        
+
         if (audioInputStream != null) {
             audioInputStream.close();
-            audioInputStream = null;    
+            audioInputStream = null;
         }
         if (bufferedInputStream != null) {
             bufferedInputStream.close();

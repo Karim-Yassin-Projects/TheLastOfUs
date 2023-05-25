@@ -31,13 +31,13 @@ public class HeroStatsPanel extends JPanel {
 
         innerPanel.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(150, 220));
-        
+
         this.setMaximumSize(getPreferredSize());
         this.setBackground(Color.WHITE);
         innerPanel.setBackground(Color.WHITE);
 
         this.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-        innerPanel.setBorder(new EmptyBorder(5,10,5,10));
+        innerPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
 
         JLabel label;
         try {

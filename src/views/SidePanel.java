@@ -14,6 +14,7 @@ import model.characters.Hero;
 
 public class SidePanel extends JPanel {
     public JScrollPane scrollPane;
+
     public SidePanel() {
         super();
         scrollPane = new JScrollPane(this);

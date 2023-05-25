@@ -85,8 +85,10 @@ public class GameView extends JFrame {
     }
 
     private void showHeroSelection() throws IOException {
-        this.splash.setVisible(false);
-        this.remove(splash);
+        if (this.splash != null) {
+            this.splash.setVisible(false);
+            this.remove(splash);
+        }
 
         heroSelection = new HeroSelection();
         heroSelection.addHeroSelectionListener(new HeroSelectionListener() {
