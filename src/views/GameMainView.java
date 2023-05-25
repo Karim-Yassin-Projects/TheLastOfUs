@@ -30,7 +30,7 @@ public class GameMainView extends JPanel {
         this.add(actionsPanel, BorderLayout.NORTH);
 
         sidePanel = new SidePanel();
-        add(sidePanel, BorderLayout.EAST);
+        add(sidePanel.scrollPane, BorderLayout.EAST);
 
         mapGrid = new MapGrid();
         add(mapGrid, BorderLayout.CENTER);
