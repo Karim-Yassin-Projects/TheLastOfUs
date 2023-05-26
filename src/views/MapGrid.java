@@ -19,7 +19,7 @@ import model.world.CharacterCell;
 import model.world.CollectibleCell;
 
 public class MapGrid extends JPanel {
-    private static boolean enableCheat = true;
+    private static boolean enableCheat = false;
 
     public MapGrid() {
         super();
@@ -149,6 +149,7 @@ public class MapGrid extends JPanel {
     private static void updateCharacterCell(ScaledButton button, CharacterCell charCell) {
         Character character = charCell.getCharacter();
         if (!charCell.isVisible() && !enableCheat) {
+            button.setImageIcon(null);
             return;
         }
         if (character != null) {
@@ -188,18 +189,18 @@ public class MapGrid extends JPanel {
             if (cell instanceof CharacterCell) {
                 CharacterCell charCell = (CharacterCell) cell;
                 if (charCell.getCharacter() != null) {
-                    button.setIcon(new ImageIcon(charCell.getCharacter().getImage()));
+                    button.setImageIcon(new ImageIcon(charCell.getCharacter().getImage()));
                     return;
                 }
             }
             if (cell instanceof CollectibleCell) {
                 CollectibleCell colCell = (CollectibleCell) cell;
-                button.setIcon(new ImageIcon(colCell.getCollectible().getImage()));
+                button.setImageIcon(new ImageIcon(colCell.getCollectible().getImage()));
             }
 
         } else {
             button.setBackground(Color.DARK_GRAY);
-            button.setIcon(new ImageIcon());
+            button.setImageIcon(new ImageIcon());
         }
     }
 }
