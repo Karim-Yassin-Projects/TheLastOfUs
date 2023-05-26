@@ -15,9 +15,7 @@ public class ActionPanelButton extends JButton {
     public ActionPanelButton() {
         super();
 
-        this.setUI(new MetalButtonUI() {
-            
-        });
+        this.setUI(new MetalButtonUI());
         this.setFocusable(false);
     }
 }

@@ -5,6 +5,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.plaf.metal.MetalButtonUI;
 
 public class ScaledButton extends JButton {
 
@@ -18,6 +19,8 @@ public class ScaledButton extends JButton {
                 setImageIcon(getImageIcon());
             }
         });
+        this.setUI(new MetalButtonUI());
+        this.setFocusable(false);
     }
 
     public void setImageIcon(ImageIcon imageIcon) {
