@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,15 +21,20 @@ import engine.GameListener;
 import model.characters.Hero;
 
 public class GameView extends JFrame {
+    
+    private static SoundPlayer backgroundMusic;
+    private static boolean enableMusic = true;
+    
     private GameMainView gameMainView;
     private HeroSelection heroSelection;
-    private SoundPlayer backgroundMusic;
-    private static boolean enableMusic = true;
     private Splash splash;
     private Timer splashTimer;
 
     public GameView(boolean showSplash) {
         super();
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+        }
         backgroundMusic = new SoundPlayer("sounds/theme.wav", true);
         if (enableMusic) {
             backgroundMusic.start();
@@ -40,7 +46,7 @@ public class GameView extends JFrame {
         this.setTitle("The Last of Us Legacy");
         if (showSplash) {
             this.splash = new Splash();
-            this.add(splash);
+            this.getContentPane().add(splash);
 
             splashTimer = new Timer(5000, new ActionListener() {
                 @Override
@@ -99,8 +105,8 @@ public class GameView extends JFrame {
             @Override
             public boolean onGameOver() {
                 GameOverPanel gameOverPanel = new GameOverPanel();
-                remove(gameMainView);
-                add(gameOverPanel);
+                getContentPane().remove(gameMainView);
+                getContentPane().add(gameOverPanel);
                 backgroundMusic.stop();
                 backgroundMusic = new SoundPlayer(
                         Game.checkWin() ? "sounds/victory.wav" : "sounds/defeat.wav", true);
@@ -116,8 +122,22 @@ public class GameView extends JFrame {
                     return false;
                 } else {
                     Game.resetGame();
-                    setVisible(false);
-                    new GameView(false);
+                    // setVisible(false);
+                    // new GameView(false);
+                    try {
+                        if (backgroundMusic != null) {
+                            backgroundMusic.stop();
+                        }
+                        showHeroSelection();
+                        setupGameListener();
+                        backgroundMusic = new SoundPlayer("sounds/theme.wav", true);
+                        if (enableMusic) {
+                            backgroundMusic.start();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     return true;
                 }
             }
@@ -125,9 +145,10 @@ public class GameView extends JFrame {
     }
 
     private void showHeroSelection() throws IOException {
-        if (this.splash != null) {
-            this.splash.setVisible(false);
-            this.remove(splash);
+        while (getContentPane().getComponentCount() > 0) {
+            Component c = getContentPane().getComponent(0);
+            c.setVisible(false);
+            getContentPane().remove(c);
         }
 
         heroSelection = new HeroSelection();
@@ -140,7 +161,7 @@ public class GameView extends JFrame {
                 add(gameMainView);
             }
         });
-        this.add(heroSelection);
+        this.getContentPane().add(heroSelection);
     }
 
     public static void handleError(Exception e) {

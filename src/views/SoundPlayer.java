@@ -42,6 +42,10 @@ public class SoundPlayer implements LineListener {
 
     public void start() {
         stop();
+        startPlaying();
+    }
+
+    private synchronized void startPlaying() {
         try {
             fileInputStream = new FileInputStream(fileName);
             bufferedInputStream = new BufferedInputStream(fileInputStream);
@@ -52,7 +56,6 @@ public class SoundPlayer implements LineListener {
             clip.start();
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -64,7 +67,7 @@ public class SoundPlayer implements LineListener {
         }
     }
 
-    private void close() throws IOException {
+    private synchronized void close() throws IOException {
         if (clip != null) {
             clip.stop();
             clip.close();
