@@ -8,15 +8,12 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import engine.Game;
-import engine.GameListener;
 import exceptions.MovementException;
 import exceptions.NotEnoughActionsException;
 import model.characters.Direction;
-import model.world.Cell;
 
 public class GameMainView extends JPanel {
     private SidePanel sidePanel;
@@ -36,14 +33,6 @@ public class GameMainView extends JPanel {
         add(mapGrid, BorderLayout.CENTER);
 
         setupKeyboardActions();
-        GameMainView that = this;
-        Game.addGameListener(new GameListener() {
-            @Override
-            public void onTrapCell(Cell cell) {
-                JOptionPane.showMessageDialog(that, "Warning! You just entered a trap cell.", "Trap Cell Message",
-                        JOptionPane.OK_OPTION);
-            }
-        });
     }
 
     private void setupKeyboardActions() {

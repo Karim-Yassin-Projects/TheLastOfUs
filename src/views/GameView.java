@@ -25,6 +25,7 @@ import javax.swing.Timer;
 import engine.Game;
 import engine.GameListener;
 import model.characters.Hero;
+import model.world.Cell;
 
 public class GameView extends JFrame {
     
@@ -168,6 +169,11 @@ public class GameView extends JFrame {
                     return true;
                 }
             }
+
+            @Override
+            public void onTrapCell(Cell cell) {
+                showErrorMessage("ATTENTION! Your hero just entered a trap cell.", Color.ORANGE);
+            }
         });
     }
 
@@ -199,8 +205,14 @@ public class GameView extends JFrame {
     Timer errorTimer;
     public static void handleError(Exception e) {
         String message = e.getMessage();
-        // JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE, null);
+        showErrorMessage(message, Color.RED);
+
+        SoundEffects.playErrorSound();
+    }
+
+    private static void showErrorMessage(String message, Color color) {
         mainWindow.errorLabel.setText(message);
+        mainWindow.errorLabel.setBackground(color);
         mainWindow.errorLabel.setVisible(true);;
         mainWindow.getContentPane().invalidate();
 
@@ -219,8 +231,6 @@ public class GameView extends JFrame {
             }
         });
         mainWindow.errorTimer.start();
-
-        SoundEffects.playErrorSound();
     }
 
     public static void main(String[] args) {
