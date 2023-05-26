@@ -20,6 +20,7 @@ public class SoundPlayer implements LineListener {
     private AudioInputStream audioInputStream;
     private final String fileName;
     private final boolean loop;
+    private volatile boolean stopped = false;
 
     public SoundPlayer(String fileName, boolean loop) {
         this.fileName = fileName;
@@ -31,7 +32,7 @@ public class SoundPlayer implements LineListener {
         if (event.getType() == LineEvent.Type.STOP) {
             try {
                 close();
-                if (loop) {
+                if (loop && !stopped) {
                     start();
                 }
             } catch (IOException e) {
@@ -42,6 +43,7 @@ public class SoundPlayer implements LineListener {
 
     public void start() {
         stop();
+        stopped = false;
         startPlaying();
     }
 
@@ -60,6 +62,7 @@ public class SoundPlayer implements LineListener {
     }
 
     public void stop() {
+        stopped = true;
         try {
             close();
         } catch (IOException e) {

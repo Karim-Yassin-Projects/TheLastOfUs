@@ -1,6 +1,10 @@
 package views;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,9 +15,11 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import engine.Game;
@@ -22,23 +28,32 @@ import model.characters.Hero;
 
 public class GameView extends JFrame {
     
-    private static SoundPlayer backgroundMusic;
-    private static boolean enableMusic = true;
+    private SoundPlayer backgroundMusic;
+    public SoundPlayer getBackgroundMusic() {
+        return backgroundMusic;
+    }
+
+    public void setBackgroundMusic(SoundPlayer backgroundMusic) {
+        if (this.backgroundMusic != null) {
+            this.backgroundMusic.stop();
+        }
+        this.backgroundMusic = backgroundMusic;
+    }
+
+    private boolean enableMusic = true;
     
     private GameMainView gameMainView;
     private HeroSelection heroSelection;
     private Splash splash;
     private Timer splashTimer;
+    public static GameView mainWindow;
+    private JLabel errorLabel;
 
     public GameView(boolean showSplash) {
         super();
-        if (backgroundMusic != null) {
-            backgroundMusic.stop();
-        }
-        backgroundMusic = new SoundPlayer("sounds/theme.wav", true);
-        if (enableMusic) {
-            backgroundMusic.start();
-        }
+        getContentPane().setLayout(new BorderLayout());
+        stopMusic();
+        setBackgroundMusic(new SoundPlayer("sounds/theme.wav", true));
         new SoundEffects();
         this.setLocation(100, 100);
         this.setSize(1280, 720);
@@ -47,7 +62,6 @@ public class GameView extends JFrame {
         if (showSplash) {
             this.splash = new Splash();
             this.getContentPane().add(splash);
-
             splashTimer = new Timer(5000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -71,6 +85,28 @@ public class GameView extends JFrame {
         setupGameListener();
         this.setVisible(true);
         setupKeyboardActions();
+
+        this.errorLabel = new JLabel();
+        this.errorLabel.setOpaque(true);
+        this.errorLabel.setBackground(Color.RED);
+        this.errorLabel.setForeground(Color.WHITE);
+        this.errorLabel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 30));
+        this.errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.errorLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+        this.errorLabel.setVisible(false);
+        this.getContentPane().add(this.errorLabel, BorderLayout.SOUTH);
+    }
+
+    private void stopMusic() {
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+        }
+    }
+
+    private void startMusic() {
+        if (backgroundMusic != null && enableMusic) {
+            backgroundMusic.start();
+        }
     }
 
     private void setupKeyboardActions() {
@@ -86,17 +122,15 @@ public class GameView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (enableMusic) {
                     enableMusic = false;
-                    if (backgroundMusic != null) {
-                        backgroundMusic.stop();
-                    }
+                    stopMusic();
                 } else {
                     enableMusic = true;
-                    if (backgroundMusic != null) {
-                        backgroundMusic.start();
-                    }
+                    startMusic();
                 }
                 
             }
+
+            
         });
     }
 
@@ -107,15 +141,13 @@ public class GameView extends JFrame {
                 GameOverPanel gameOverPanel = new GameOverPanel();
                 getContentPane().remove(gameMainView);
                 getContentPane().add(gameOverPanel);
-                backgroundMusic.stop();
-                backgroundMusic = new SoundPlayer(
-                        Game.checkWin() ? "sounds/victory.wav" : "sounds/defeat.wav", true);
-                if (enableMusic) {
-                        backgroundMusic.start();
-                }
+                stopMusic();
+                setBackgroundMusic(new SoundPlayer(
+                        Game.checkWin() ? "sounds/victory.wav" : "sounds/defeat.wav", true));
+                startMusic();
                 int result = JOptionPane.showConfirmDialog(gameOverPanel, "Would you like to play again?",
                         "Game Over", JOptionPane.YES_NO_OPTION);
-                backgroundMusic.stop();
+                stopMusic();
                 if (result != JOptionPane.YES_OPTION) {
                     dispose();
                     System.exit(0);
@@ -125,15 +157,10 @@ public class GameView extends JFrame {
                     // setVisible(false);
                     // new GameView(false);
                     try {
-                        if (backgroundMusic != null) {
-                            backgroundMusic.stop();
-                        }
                         showHeroSelection();
                         setupGameListener();
-                        backgroundMusic = new SoundPlayer("sounds/theme.wav", true);
-                        if (enableMusic) {
-                            backgroundMusic.start();
-                        }
+                        setBackgroundMusic(new SoundPlayer("sounds/theme.wav", true));
+                        startMusic();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -145,8 +172,13 @@ public class GameView extends JFrame {
     }
 
     private void showHeroSelection() throws IOException {
-        while (getContentPane().getComponentCount() > 0) {
-            Component c = getContentPane().getComponent(0);
+        int n = 0;
+        while (getContentPane().getComponentCount() > n) {
+            Component c = getContentPane().getComponent(n);
+            if (c == errorLabel) {
+                n++;
+                continue;
+            }
             c.setVisible(false);
             getContentPane().remove(c);
         }
@@ -164,15 +196,34 @@ public class GameView extends JFrame {
         this.getContentPane().add(heroSelection);
     }
 
+    Timer errorTimer;
     public static void handleError(Exception e) {
         String message = e.getMessage();
-        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE, null);
+        // JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE, null);
+        mainWindow.errorLabel.setText(message);
+        mainWindow.errorLabel.setVisible(true);;
+        mainWindow.getContentPane().invalidate();
+
+        if (mainWindow.errorTimer != null) {
+            mainWindow.errorTimer.stop();
+        }
+
+        mainWindow.errorTimer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainWindow.errorLabel.setVisible(false);
+                if (mainWindow.errorTimer != null) {
+                    mainWindow.errorTimer.stop();
+                    mainWindow.errorTimer = null;
+                }
+            }
+        });
+        mainWindow.errorTimer.start();
+
         SoundEffects.playErrorSound();
     }
 
     public static void main(String[] args) {
-        new GameView(true);
+        mainWindow = new GameView(true);
     }
-
-    
 }
