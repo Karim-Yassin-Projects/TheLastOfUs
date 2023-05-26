@@ -10,4 +10,8 @@ public class Fighter extends Hero {
 	public String getSpecialSound() {
 		return "sounds/war_cry.wav";
 	}
+
+	public String getSpecialActionText() {
+		return "Unlimited Attacks";
+	}
 }

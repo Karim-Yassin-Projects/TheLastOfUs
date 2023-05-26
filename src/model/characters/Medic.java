@@ -20,7 +20,13 @@ public class Medic extends Hero {
 		getTarget().setCurrentHp(getTarget().getMaxHp());
 	}
 
+	@Override
 	public String getSpecialSound() {
 		return "sounds/heal.wav";
+	}
+
+	@Override
+	public String getSpecialActionText() {
+		return "Heal";
 	}
 }

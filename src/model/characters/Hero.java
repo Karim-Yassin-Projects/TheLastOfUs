@@ -247,4 +247,6 @@ public abstract class Hero extends Character {
 	public String getThanksSound() {
 		return isMale() ? "sounds/male_thanks.wav" : "sounds/female_thanks.wav";
 	}
+
+	public abstract String getSpecialActionText();
 }

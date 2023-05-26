@@ -128,5 +128,12 @@ public class ActionsPanel extends JPanel {
         attackButton.setEnabled(heroIsSelected);
         cureButton.setEnabled(heroIsSelected);
         useSpecialButton.setEnabled(heroIsSelected);
+
+        Hero hero = Game.getSelectedHero();
+        if (hero == null) {
+            useSpecialButton.setText("Use Special Action");
+        } else {
+            useSpecialButton.setText(hero.getSpecialActionText());
+        }
     }
 }

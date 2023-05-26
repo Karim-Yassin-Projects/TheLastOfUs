@@ -23,4 +23,9 @@ public class Explorer extends Hero {
 	public String getSpecialSound() {
 		return "sounds/light_on.wav";
 	}
+
+	@Override
+	public String getSpecialActionText() {
+		return "Reveal entire map";
+	}
 }
