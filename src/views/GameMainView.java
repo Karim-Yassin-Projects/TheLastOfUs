@@ -68,11 +68,9 @@ public class GameMainView extends JPanel {
 
     private static class MoveAction extends AbstractAction {
         private final Direction direction;
-        private final GameMainView view;
 
         public MoveAction(GameMainView view, Direction direction) {
             super();
-            this.view = view;
             this.direction = direction;
         }
 

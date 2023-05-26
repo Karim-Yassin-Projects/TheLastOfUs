@@ -2,10 +2,17 @@ package views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import engine.Game;
@@ -16,13 +23,16 @@ public class GameView extends JFrame {
     private GameMainView gameMainView;
     private HeroSelection heroSelection;
     private SoundPlayer backgroundMusic;
+    private static boolean enableMusic = true;
     private Splash splash;
     private Timer splashTimer;
 
     public GameView(boolean showSplash) {
         super();
         backgroundMusic = new SoundPlayer("sounds/theme.wav", true);
-        backgroundMusic.start();
+        if (enableMusic) {
+            backgroundMusic.start();
+        }
         new SoundEffects();
         this.setLocation(100, 100);
         this.setSize(1280, 720);
@@ -54,7 +64,34 @@ public class GameView extends JFrame {
 
         setupGameListener();
         this.setVisible(true);
+        setupKeyboardActions();
+    }
 
+    private void setupKeyboardActions() {
+        JPanel container = (JPanel)getContentPane();
+        ActionMap actionMap =  container.getActionMap();
+        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        InputMap inputMap = container.getInputMap(condition);
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, 0, true), "music");
+
+        actionMap.put("music", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (enableMusic) {
+                    enableMusic = false;
+                    if (backgroundMusic != null) {
+                        backgroundMusic.stop();
+                    }
+                } else {
+                    enableMusic = true;
+                    if (backgroundMusic != null) {
+                        backgroundMusic.start();
+                    }
+                }
+                
+            }
+        });
     }
 
     private void setupGameListener() {
@@ -67,7 +104,9 @@ public class GameView extends JFrame {
                 backgroundMusic.stop();
                 backgroundMusic = new SoundPlayer(
                         Game.checkWin() ? "sounds/victory.wav" : "sounds/defeat.wav", true);
-                backgroundMusic.start();
+                if (enableMusic) {
+                        backgroundMusic.start();
+                }
                 int result = JOptionPane.showConfirmDialog(gameOverPanel, "Would you like to play again?",
                         "Game Over", JOptionPane.YES_NO_OPTION);
                 backgroundMusic.stop();
@@ -113,4 +152,6 @@ public class GameView extends JFrame {
     public static void main(String[] args) {
         new GameView(true);
     }
+
+    
 }
