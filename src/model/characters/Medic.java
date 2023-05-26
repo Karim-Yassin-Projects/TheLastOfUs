@@ -17,4 +17,8 @@ public class Medic extends Hero {
 		super.useSpecial();
 		getTarget().setCurrentHp(getTarget().getMaxHp());
 	}
+
+	public String getSpecialSound() {
+		return "sounds/heal.wav";
+	}
 }

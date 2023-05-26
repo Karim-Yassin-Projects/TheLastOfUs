@@ -14,6 +14,7 @@ public class Vaccine implements Collectible {
 	public void pickUp(Hero h) {
 		h.getVaccineInventory().add(this);
 		h.updateVaccineCount(h.getVaccineInventory().size() - 1);
+		Game.handleCollectiblePickUp(this);
 	}
 
 	@Override
@@ -34,6 +35,11 @@ public class Vaccine implements Collectible {
 	@Override
 	public String getImage() {
 		return "images/vaccine.png";
+	}
+
+	@Override
+	public String getSound() {
+		return "sounds/vaccine.wav";
 	}
 
 }

@@ -23,6 +23,7 @@ public class GameView extends JFrame {
         super();
         backgroundMusic = new SoundPlayer("sounds/theme.wav", true);
         backgroundMusic.start();
+        new SoundEffects();
         this.setLocation(100, 100);
         this.setSize(1280, 720);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -68,7 +69,7 @@ public class GameView extends JFrame {
                         Game.checkWin() ? "sounds/victory.wav" : "sounds/defeat.wav", true);
                 backgroundMusic.start();
                 int result = JOptionPane.showConfirmDialog(gameOverPanel, "Would you like to play again?",
-                        "Game Over Message", JOptionPane.YES_NO_OPTION);
+                        "Game Over", JOptionPane.YES_NO_OPTION);
                 backgroundMusic.stop();
                 if (result != JOptionPane.YES_OPTION) {
                     dispose();
@@ -101,6 +102,12 @@ public class GameView extends JFrame {
             }
         });
         this.add(heroSelection);
+    }
+
+    public static void handleError(Exception e) {
+        String message = e.getMessage();
+        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE, null);
+        SoundEffects.playErrorSound();
     }
 
     public static void main(String[] args) {

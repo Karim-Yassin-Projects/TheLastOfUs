@@ -1,6 +1,7 @@
 package engine;
 
 import model.characters.Hero;
+import model.collectibles.Collectible;
 import model.characters.Character;
 import model.world.Cell;
 
@@ -26,14 +27,30 @@ public abstract class GameListener {
     }
 
     public void onHeroRemoved(Hero hero) {
+    
+    }
 
+    public void onHeroSpecial(Hero hero) {
+    
     }
 
     public void onTrapCell(Cell cell) {
+    
+    }
+
+    public void onDefend(Character defendingCharacter, Character targetCharacter) {
+
+    }
+
+    public void onAttack(Character attackingCharacter, Character targetCharacter) {
 
     }
 
     public boolean onGameOver() {
         return false;
+    }
+
+    public void onCollectiblePickUp(Collectible collectible) {
+
     }
 }

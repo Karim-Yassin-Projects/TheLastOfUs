@@ -8,4 +8,6 @@ public interface Collectible {
 	void use(Hero h);
 
 	String getImage();
+
+	String getSound();
 }

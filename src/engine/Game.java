@@ -11,6 +11,7 @@ import model.characters.Fighter;
 import model.characters.Hero;
 import model.characters.Medic;
 import model.characters.Zombie;
+import model.collectibles.Collectible;
 import model.collectibles.Supply;
 import model.collectibles.Vaccine;
 import model.world.Cell;
@@ -310,4 +311,28 @@ public class Game {
 		selectedHero = null;
 		Game.map = new Cell[15][15];
 	}
+
+    public static void handleHeroSpecial(Hero hero) {
+		for (GameListener listener : gameListeners) {
+			listener.onHeroSpecial(hero);
+		}
+    }
+
+    public static void handleDefend(Character defendingCharacter, Character targetCharacter) {
+		for (GameListener listener : gameListeners) {
+			listener.onDefend(defendingCharacter, targetCharacter);
+		}
+	}
+
+	public static void handleAttack(Character attackingCharacter, Character targetCharacter) {
+		for (GameListener listener : gameListeners) {
+			listener.onAttack(attackingCharacter, targetCharacter);
+		}
+	}
+
+    public static void handleCollectiblePickUp(Collectible collectible) {
+		for (GameListener listener : gameListeners) {
+			listener.onCollectiblePickUp(collectible);
+		}
+    }
 }

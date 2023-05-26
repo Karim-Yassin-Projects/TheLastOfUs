@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -30,7 +29,6 @@ public class ActionsPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(Color.BLACK);
         attackButton = new ActionPanelButton();
-        ActionsPanel that = this;
         attackButton.setBackground(Color.WHITE);
         attackButton.setText("Attack");
         this.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
@@ -43,8 +41,7 @@ public class ActionsPanel extends JPanel {
                 try {
                     Game.getSelectedHero().attack();
                 } catch (NotEnoughActionsException | InvalidTargetException e1) {
-                    String message = e1.getMessage();
-                    JOptionPane.showMessageDialog(that, message, "Attack Error", JOptionPane.ERROR_MESSAGE, null);
+                    GameView.handleError(e1);
                 }
 
             }
@@ -62,8 +59,7 @@ public class ActionsPanel extends JPanel {
                 try {
                     Game.getSelectedHero().cure();
                 } catch (NoAvailableResourcesException | InvalidTargetException | NotEnoughActionsException e1) {
-                    String message = e1.getMessage();
-                    JOptionPane.showMessageDialog(that, message, "Cure Error", JOptionPane.ERROR_MESSAGE, null);
+                    GameView.handleError(e1);
                 }
 
             }
@@ -82,9 +78,7 @@ public class ActionsPanel extends JPanel {
                 try {
                     Game.getSelectedHero().useSpecial();
                 } catch (NoAvailableResourcesException | InvalidTargetException e1) {
-                    String message = e1.getMessage();
-                    JOptionPane.showMessageDialog(that, message, "Special Action Error", JOptionPane.ERROR_MESSAGE,
-                            null);
+                    GameView.handleError(e1);
                 }
 
             }
@@ -99,8 +93,7 @@ public class ActionsPanel extends JPanel {
                 try {
                     Game.endTurn();
                 } catch (NotEnoughActionsException | InvalidTargetException e1) {
-                    String message = e1.getMessage();
-                    JOptionPane.showMessageDialog(that, message, "End Turn Error", JOptionPane.ERROR_MESSAGE, null);
+                    GameView.handleError(e1);
                 }
             }
         });
@@ -136,5 +129,4 @@ public class ActionsPanel extends JPanel {
         cureButton.setEnabled(heroIsSelected);
         useSpecialButton.setEnabled(heroIsSelected);
     }
-
 }

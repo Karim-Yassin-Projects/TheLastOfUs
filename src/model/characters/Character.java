@@ -82,11 +82,13 @@ public abstract class Character {
 	public void attack() throws NotEnoughActionsException,
 			InvalidTargetException {
 		getTarget().setCurrentHp(getTarget().getCurrentHp() - getAttackDmg());
+		Game.handleAttack(this, target);
 		getTarget().defend(this);
 	}
 
 	public void defend(Character c) {
 		c.setCurrentHp(c.getCurrentHp() - getAttackDmg() / 2);
+		Game.handleDefend(this, c);
 	}
 
 	public void onCharacterDeath() {
@@ -135,4 +137,7 @@ public abstract class Character {
 	public void removeCharacterListener(CharacterListener listener) {
 		listeners.remove(listener);
 	}
+
+	public abstract String getDeathSound();
+	public abstract String getDamagedSound();
 }

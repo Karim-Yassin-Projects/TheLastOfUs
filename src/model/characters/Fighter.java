@@ -6,4 +6,8 @@ public class Fighter extends Hero {
 		super(name, maxHp, attackDamage, maxActions);
 	}
 
+	@Override
+	public String getSpecialSound() {
+		return "sounds/war_cry.wav";
+	}
 }

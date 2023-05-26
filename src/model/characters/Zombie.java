@@ -39,4 +39,14 @@ public class Zombie extends Character {
 	public String getImage() {
 		return "images/zombie.png";
 	}
+
+	@Override
+	public String getDamagedSound() {
+		return "sounds/zombie_ouch.wav";
+	}
+
+	@Override
+	public String getDeathSound() {
+		return "sounds/zombie_death.wav";
+	}
 }

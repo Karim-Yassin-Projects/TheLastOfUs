@@ -135,6 +135,7 @@ public abstract class Hero extends Character {
 					"You need to have at least 1 supply in your inventory to use your special abililty.");
 		this.supplyInventory.get(0).use(this);
 		this.setSpecialAction(true);
+		Game.handleHeroSpecial(this);
 	}
 
 	public boolean checkDistance() {
@@ -218,5 +219,32 @@ public abstract class Hero extends Character {
 		getSupplyInventory().clear();
 		getVaccineInventory().clear();
 		listeners.clear();
+	}
+
+	public boolean isMale() {
+		switch(getName()) {
+			case "Ellie Williams":
+			case "Tess":
+			case "Riley Abel":
+				return false;
+			default:
+				return true;
+		}
+	}
+
+	@Override
+	public String getDeathSound() {
+		return isMale() ? "sounds/male_death.wav" : "sounds/female_death.wav";
+	}
+
+	@Override
+	public String getDamagedSound() {
+		return isMale() ? "sounds/male_ouch.wav" : "sounds/female_ouch.wav";
+	}
+
+	public abstract String getSpecialSound();
+
+	public String getThanksSound() {
+		return isMale() ? "sounds/male_thanks.wav" : "sounds/female_thanks.wav";
 	}
 }

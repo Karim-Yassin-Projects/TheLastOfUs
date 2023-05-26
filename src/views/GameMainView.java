@@ -85,8 +85,7 @@ public class GameMainView extends JPanel {
                 Game.getSelectedHero().move(direction);
 
             } catch (MovementException | NotEnoughActionsException me) {
-                String message = me.getMessage();
-                JOptionPane.showMessageDialog(view, message, "Movement Error", JOptionPane.ERROR_MESSAGE);
+                GameView.handleError(me);
             }
         }
     }

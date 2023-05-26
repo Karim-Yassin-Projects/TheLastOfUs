@@ -18,4 +18,9 @@ public class Explorer extends Hero {
 			}
 		}
 	}
+
+	@Override
+	public String getSpecialSound() {
+		return "sounds/light_on.wav";
+	}
 }
