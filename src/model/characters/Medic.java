@@ -11,7 +11,9 @@ public class Medic extends Hero {
 
 	public void useSpecial() throws NoAvailableResourcesException, InvalidTargetException {
 		if (getTarget() instanceof Zombie)
-			throw new InvalidTargetException("You can only cure fellow heroes.");
+			throw new InvalidTargetException("You can only heal fellow heroes.");
+		if (getTarget() == null)
+			throw new InvalidTargetException("Please select a friendly hero to heal.");
 		if (!checkDistance())
 			throw new InvalidTargetException("You are only able to heal adjacent targets.");
 		super.useSpecial();
