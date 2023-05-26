@@ -135,12 +135,11 @@ public class MapGrid extends JPanel {
         int width = isTarget || isselected ? 3 : 1;
 
         if (isselected && isTarget) {
-            color1 = new Color(128, 0, 255, 255);
-
+            color1 = (Game.getSelectedHero().getTarget() instanceof Hero) ? new Color(0, 128, 255, 255) : new Color(128, 0, 255, 255);
         } else if (isselected) {
             color1 = Color.BLUE;
         } else if (isTarget) {
-            color1 = Color.RED;
+            color1 = (Game.getSelectedHero().getTarget() instanceof Hero) ? Color.GREEN : Color.RED;
         } else {
             color1 = Color.GRAY;
         }
