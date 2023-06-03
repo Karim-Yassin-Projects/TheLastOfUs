@@ -56,7 +56,6 @@ public class GameView extends JFrame {
         stopMusic();
         setBackgroundMusic(new SoundPlayer("sounds/theme.wav", true));
         startMusic();
-        new SoundEffects();
         this.setLocation(100, 100);
         this.setSize(1280, 720);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -137,6 +136,8 @@ public class GameView extends JFrame {
     }
 
     private void setupGameListener() {
+        new SoundEffects();
+
         Game.addGameListener(new GameListener() {
             @Override
             public boolean onGameOver() {
