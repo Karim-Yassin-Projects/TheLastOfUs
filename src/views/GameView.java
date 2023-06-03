@@ -55,6 +55,7 @@ public class GameView extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         stopMusic();
         setBackgroundMusic(new SoundPlayer("sounds/theme.wav", true));
+        startMusic();
         new SoundEffects();
         this.setLocation(100, 100);
         this.setSize(1280, 720);
